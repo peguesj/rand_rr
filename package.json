@@ -1,14 +1,41 @@
 {
-  "name": "finnessume",
-  "version": "1.0.0",
-  "description": "Professional resume generation and management system",
+  "name": "@pegues/finnessume",
+  "version": "3.1.0",
+  "description": "Professional resume generation and management system with dynamic templating and schema validation",
   "author": "Jeremiah Pegues <jeremiah@pegues.io>",
   "license": "MIT",
-  "private": true,
+  "private": false,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jeremiahpegues/finnessume.git"
+  },
+  "keywords": [
+    "resume",
+    "cv",
+    "generator",
+    "parser",
+    "schema",
+    "template"
+  ],
+  "main": "src/js/render.js",
+  "types": "types/index.d.ts",
+  "files": [
+    "src/js",
+    "src/css",
+    "src/schemas",
+    "types",
+    "public"
+  ],
   "scripts": {
     "start": "serve public/",
     "validate": "node src/js/utils/validators.js",
-    "test": "npm run validate"
+    "test": "npm run validate",
+    "build": "npm run build-css && npm run build-js",
+    "build-css": "sass src/styles/main.scss src/css/styles.css",
+    "watch-css": "sass --watch src/styles/main.scss:src/css/styles.css",
+    "lint": "eslint src/js/",
+    "format": "prettier --write .",
+    "prepare": "husky install"
   },
   "dependencies": {
     "jquery": "^3.6.0",
@@ -17,6 +44,16 @@
   },
   "devDependencies": {
     "ajv": "^8.12.0",
-    "ajv-formats": "^2.1.1"
+    "ajv-formats": "^2.1.1",
+    "sass": "^1.69.5",
+    "eslint": "^8.56.0",
+    "prettier": "^3.1.1",
+    "husky": "^8.0.3"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
