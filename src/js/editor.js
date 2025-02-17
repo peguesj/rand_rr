@@ -1,4 +1,76 @@
+/**
+ * Resume Editor Module v1.0
+ * @description Dynamic resume editor with real-time preview and JSON validation
+ * @requires jQuery 3.6.0
+ * @requires Bootstrap 5.3
+ * @requires html2pdf.js 0.10.1
+ */
 
+(function($) {
+    'use strict';
+
+    /**
+     * Schema version and configuration
+     * @const {Object}
+     */
+    const CONFIG = {
+        version: '1.0',
+        schemaVersion: '3.1.3',
+        schemaDate: '2025-02-17',
+        author: 'Jeremiah Pegues <jeremiah@pegues.io>'
+    };
+
+    // State management
+    let currentResume = null;
+    let updateTimer = null;
+    
+    // Initialize editor
+    function initEditor() {
+        loadDefaultResume();
+        bindEvents();
+        setupAutoUpdate();
+    }
+
+    // Load default resume
+    function loadDefaultResume() {
+        $.getJSON('parsedResume.json')
+            .done(function(data) {
+                currentResume = data;
+                updateEditorFields();
+                updateJsonPreview();
+                // Initialize preview with default styling
+                const $previewPane = $('#previewPane');
+                $previewPane.addClass('doc-content');
+                updatePreview();
+            });
+    }
+
+    // Create editor fields dynamically
+    function updateEditorFields() {
+        const $fields = $('#editorFields');
+        $fields.empty();
+
+        // Personal Info
+        addSection($fields, 'Personal Information', [
+            { key: 'name', label: 'Name', value: currentResume.data.personalInfo.name },
+            { key: 'email', label: 'Email', value: currentResume.data.personalInfo.contactDetails.email },
+            { key: 'phone', label: 'Phone', value: currentResume.data.personalInfo.contactDetails.phoneNumber },
+            { key: 'address', label: 'Address', value: currentResume.data.personalInfo.contactDetails.address }
+        ]);
+
+        // Summary
+        addSection($fields, 'Summary', [
+            { key: 'summary', label: 'Professional Summary', value: currentResume.data.summary.content, type: 'textarea' }
+        ]);
+
+        // Skills
+        const skillsHtml = `
+            <div class="mb-4">
+                <h6>Skills</h6>
+                <div id="skillsList">
+                    ${currentResume.data.skills.items.map((skill, i) => `
+                        <div class="input-group mb-2">
+                            <input type="text" class="form-control skill-item" value="${skill.skill}" data-index="${i}">
                             <button class="btn btn-outline-danger remove-skill" type="button">×</button>
                         </div>
                     `).join('')}

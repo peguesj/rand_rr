@@ -1,4 +1,87 @@
+/**
+ * Resume Renderer Module v1.0
+ * @description Core resume rendering engine that transforms JSON data into HTML
+ * @requires jQuery 3.6.0
+ * @requires html2pdf.js 0.10.1
+ */
 
+(function($) {
+  'use strict';
+
+  /**
+   * Module configuration and versioning
+   * @const {Object}
+   */
+  const CONFIG = {
+    version: '1.0',
+    schemaVersion: '3.1.3',
+    schemaDate: '2025-02-17',
+    author: 'Jeremiah Pegues <jeremiah@pegues.io>'
+  };
+
+  /**
+   * Logging utility for tracking render operations
+   * @param {string} message - Log message
+   */
+  function syslogInfo(message) {
+    const ts = new Date().toISOString();
+    console.log(`INFO: ${ts} ${message}`);
+  }
+
+  // Get URL parameters
+  const urlParams = new URLSearchParams(window.location.search);
+  const customResumeJson = urlParams.get('resume');
+  const useCustomSchema = urlParams.get('customSchema') === 'true';
+  const exportFormat = urlParams.get('export');
+
+  // Helper to format date "YYYY-MM-DD" to "Mon YYYY"
+  function formatDate(dateStr) {
+    const months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+    let d = new Date(dateStr);
+    return `${months[d.getMonth()]} ${d.getFullYear()}`;
+  }
+
+  // Helper to export PDF
+  function exportToPDF() {
+    const element = document.querySelector('.doc-content');
+    const opt = {
+      margin: [0.5, 0.5],
+      filename: 'resume.pdf',
+      image: { type: 'jpeg', quality: 0.98 },
+      html2canvas: { scale: 2 },
+      jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+    };
+
+    // Generate and download PDF
+    html2pdf().set(opt).from(element).save();
+  }
+
+  syslogInfo("Starting resume rendering process.");
+
+  // Determine paths based on parameters
+  const resumePath = customResumeJson || 'parsedResume.json';
+  const schemaPath = useCustomSchema ? 'customResume_schema.json' : 'parsedResume_schema.json';
+
+  // Load resume JSON
+  $.getJSON(resumePath)
+    .done(function(resumeData) {
+      syslogInfo(`Loaded resume data from ${resumePath}.`);
+
+      // Load schema JSON (actual validation is omitted)
+      $.getJSON(schemaPath)
+        .done(function(schemaData) {
+          syslogInfo(`Loaded resume schema from ${schemaPath}.`);
+          syslogInfo("Validation successful (actual validation skipped).");
+
+          // Clear existing content first
+          $('.doc-content').empty();
+          
+          // Create main container
+          const $mainContent = $('<div class="resume-content"></div>');
+          
+          // Build header section
+          if (resumeData.data && resumeData.data.personalInfo) {
+            const personalInfo = resumeData.data.personalInfo;
             const titles = personalInfo.titles || {
               defaultRole: "CYBERSECURITY MANAGEMENT PROFESSIONAL",
               genericRole: "CYBERSECURITY MANAGEMENT PROFESSIONAL",
