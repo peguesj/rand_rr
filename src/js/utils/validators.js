@@ -21,6 +21,16 @@ const jobSchema = require('../../schemas/job.json');
 const validateResume = ajv.compile(resumeSchema);
 const validateJob = ajv.compile(jobSchema);
 
+const PAGE_FORMATS = {
+    none: { label: 'Continuous', width: null, height: null },
+    letter: { label: 'Letter', width: '8.5in', height: '11in' },
+    legal: { label: 'Legal', width: '8.5in', height: '14in' }
+};
+
+function validatePageFormat(format) {
+    return Object.keys(PAGE_FORMATS).includes(format);
+}
+
 /**
  * Validate resume JSON against schema
  * @param {Object} data Resume data to validate
@@ -81,7 +91,9 @@ function runValidations() {
 // Export functions for external use
 module.exports = {
     validateResumeData,
-    validateJobData
+    validateJobData,
+    validatePageFormat,
+    PAGE_FORMATS
 };
 
 // Run validations if called directly

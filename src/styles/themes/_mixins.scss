@@ -1,0 +1,7 @@
+@mixin themed() {
+  @each $theme, $colors in $themes {
+    .theme-#{$theme} & {
+      @content($colors);
+    }
+  }
+}
