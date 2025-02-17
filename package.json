@@ -1,10 +1,10 @@
 {
-  "name": "@pegues/finnessume",
+  "name": "@pyj/finnesse",
   "version": "3.1.0",
   "description": "Professional resume generation and management system with dynamic templating and schema validation",
   "author": "Jeremiah Pegues <jeremiah@pegues.io>",
   "license": "MIT",
-  "private": false,
+  "private": "false",
   "repository": {
     "type": "git",
     "url": "https://github.com/jeremiahpegues/finnessume.git"
@@ -35,20 +35,25 @@
     "watch-css": "sass --watch src/styles/main.scss:src/css/styles.css",
     "lint": "eslint src/js/",
     "format": "prettier --write .",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "prepublishOnly": "npm run build && npm test",
+    "version": "npm run format && git add -A src",
+    "postversion": "git push && git push --tags",
+    "release": "npm run build && npm test && npm version",
+    "publish-npm": "npm publish --access public"
   },
   "dependencies": {
-    "jquery": "^3.6.0",
     "bootstrap": "^5.3.2",
-    "html2pdf.js": "^0.10.1"
+    "html2pdf.js": "^0.10.1",
+    "jquery": "^3.6.0"
   },
   "devDependencies": {
     "ajv": "^8.12.0",
     "ajv-formats": "^2.1.1",
-    "sass": "^1.69.5",
     "eslint": "^8.56.0",
+    "husky": "^8.0.3",
     "prettier": "^3.1.1",
-    "husky": "^8.0.3"
+    "sass": "^1.69.5"
   },
   "engines": {
     "node": ">=14.0.0"

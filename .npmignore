@@ -1,0 +1,8 @@
+src/styles/
+src/tests/
+docs/
+examples/
+.git*
+.env*
+*.log
+coverage/
