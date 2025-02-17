@@ -1,0 +1,505 @@
+/**
+ * Job Posting Schema v1.0.0
+ * Author: Jeremiah Pegues <jeremiah@pegues.io>
+ * Date: 2025-02-17
+ * License: MIT
+ * 
+ * This schema defines the structure for job postings with comprehensive
+ * support for various posting styles and formats. It's designed to handle
+ * both traditional and modern job descriptions, with special attention to
+ * tech industry specifics.
+ */
+
+{
+    // Schema metadata and versioning
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "https://pegues.io/schemas/jobposting/v1.0.0",
+    "title": "Job Posting Schema",
+    "description": "Comprehensive schema for structured job posting data",
+    "version": "1.0.0",
+
+    // Core posting properties
+    "type": "object",
+    "properties": {
+        // Unique identifier for the job posting
+        "jobPostingId": {
+            "type": "string",
+            "description": "UUID v4 recommended for global uniqueness"
+        },
+
+        // Metadata for tracking and management
+        "metadata": {
+            "type": "object",
+            "properties": {
+                // Source platform (e.g., "LinkedIn", "Indeed", "Company Website")
+                "source": {
+                    "type": "string",
+                    "description": "Origin platform of the job posting"
+                },
+                // Posting lifecycle dates
+                "postDate": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "When the position was first posted"
+                },
+                "expirationDate": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "When the posting will expire/close"
+                },
+                "lastModified": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "Last update timestamp"
+                },
+                // Current status of the posting
+                "status": {
+                    "type": "string",
+                    "enum": ["active", "filled", "expired", "draft"],
+                    "description": "Current state of the job posting"
+                },
+                // Visibility and promotional settings
+                "featured": {
+                    "type": "boolean",
+                    "description": "Whether this is a featured/promoted posting"
+                },
+                "internal": {
+                    "type": "boolean",
+                    "description": "Whether this is an internal-only posting"
+                }
+            },
+            "required": ["source", "postDate", "status"]
+        },
+
+        // Position details
+        "position": {
+            "type": "object",
+            "properties": {
+                "title": {
+                    "type": "string",
+                    "description": "Official job title"
+                },
+                // Employment type classification
+                "type": {
+                    "type": "string",
+                    "enum": ["full-time", "part-time", "contract", "temporary", "internship"],
+                    "description": "Employment type category"
+                },
+                // Seniority/career level
+                "level": {
+                    "type": "string",
+                    "enum": ["entry", "associate", "mid-senior", "senior", "lead", "principal", "executive"],
+                    "description": "Career level or seniority"
+                },
+                // Department/function area
+                "function": {
+                    "type": "string",
+                    "description": "Primary job function/department (e.g., Engineering, Sales)"
+                },
+                // Detailed classification data
+                "classification": {
+                    "type": "object",
+                    "properties": {
+                        "industry": {
+                            "type": "string",
+                            "description": "Primary industry category"
+                        },
+                        "category": {
+                            "type": "string",
+                            "description": "Job category (e.g., Software Development)"
+                        },
+                        "subcategory": {
+                            "type": "string",
+                            "description": "Specific focus area (e.g., Frontend Development)"
+                        },
+                        // Standard classification codes
+                        "codes": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "system": {
+                                        "type": "string",
+                                        "description": "Classification system (e.g., SOC, NAICS, O*NET)"
+                                    },
+                                    "code": {
+                                        "type": "string",
+                                        "description": "The actual classification code"
+                                    }
+                                }
+                            },
+                            "description": "Standard industry classification codes"
+                        }
+                    }
+                }
+            },
+            "required": ["title", "type", "level"]
+        },
+
+        // Organization/Company information
+        "organization": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "description": "Company/organization name"
+                },
+                "department": {
+                    "type": "string",
+                    "description": "Specific department/division"
+                },
+                // Company info for startups/tech
+                "funding": {
+                    "type": "object",
+                    "properties": {
+                        "stage": {
+                            "type": "string",
+                            "enum": ["seed", "series-a", "series-b", "series-c", "series-d", "public"],
+                            "description": "Current funding stage"
+                        },
+                        "amount": {
+                            "type": "number",
+                            "description": "Total funding raised (USD)"
+                        },
+                        "investors": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            },
+                            "description": "Key investors/VC firms"
+                        }
+                    }
+                },
+                // Location information
+                "location": {
+                    "type": "object",
+                    "properties": {
+                        "type": {
+                            "type": "string",
+                            "enum": ["on-site", "hybrid", "remote"],
+                            "description": "Work location type"
+                        },
+                        "primary": {
+                            "type": "object",
+                            "properties": {
+                                "city": { "type": "string" },
+                                "state": { "type": "string" },
+                                "country": { "type": "string" },
+                                "postalCode": { "type": "string" }
+                            },
+                            "description": "Primary job location"
+                        },
+                        "travelRequired": {
+                            "type": "object",
+                            "properties": {
+                                "percentage": { 
+                                    "type": "number",
+                                    "description": "Expected travel percentage"
+                                },
+                                "frequency": { 
+                                    "type": "string",
+                                    "description": "How often travel is required"
+                                },
+                                "scope": { 
+                                    "type": "string",
+                                    "description": "Geographic scope of travel"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "required": ["name", "location"]
+        },
+
+        // Compensation and benefits
+        "compensation": {
+            "type": "object",
+            "properties": {
+                "type": {
+                    "type": "string",
+                    "enum": ["salary", "hourly", "commission", "project-based"],
+                    "description": "Primary compensation type"
+                },
+                // Salary/rate range
+                "range": {
+                    "type": "object",
+                    "properties": {
+                        "minimum": { 
+                            "type": "number",
+                            "description": "Minimum compensation amount"
+                        },
+                        "maximum": { 
+                            "type": "number",
+                            "description": "Maximum compensation amount"
+                        },
+                        "currency": { 
+                            "type": "string",
+                            "description": "ISO 4217 currency code"
+                        },
+                        "interval": {
+                            "type": "string",
+                            "enum": ["hourly", "weekly", "monthly", "annual"],
+                            "description": "Payment interval"
+                        }
+                    }
+                },
+                // Benefits package
+                "benefits": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "category": { 
+                                "type": "string",
+                                "description": "Benefit category (e.g., health, retirement)"
+                            },
+                            "description": { 
+                                "type": "string",
+                                "description": "Detailed benefit description"
+                            }
+                        }
+                    }
+                },
+                // Equity compensation
+                "equity": {
+                    "type": "object",
+                    "properties": {
+                        "type": { 
+                            "type": "string",
+                            "description": "Type of equity (e.g., RSUs, options)"
+                        },
+                        "range": {
+                            "minimum": { 
+                                "type": "number",
+                                "description": "Minimum equity percentage/amount"
+                            },
+                            "maximum": { 
+                                "type": "number",
+                                "description": "Maximum equity percentage/amount"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+
+        // Job requirements
+        "requirements": {
+            "type": "object",
+            "properties": {
+                // Educational requirements
+                "education": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "level": { 
+                                "type": "string",
+                                "description": "Degree level required"
+                            },
+                            "field": { 
+                                "type": "string",
+                                "description": "Field of study"
+                            },
+                            "required": { 
+                                "type": "boolean",
+                                "description": "Whether this is required or preferred"
+                            }
+                        }
+                    }
+                },
+                // Experience requirements
+                "experience": {
+                    "type": "object",
+                    "properties": {
+                        "minimum": { 
+                            "type": "number",
+                            "description": "Minimum years required"
+                        },
+                        "preferred": { 
+                            "type": "number",
+                            "description": "Preferred years of experience"
+                        },
+                        // Specific experience areas
+                        "areas": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "skill": { 
+                                        "type": "string",
+                                        "description": "Required skill/technology"
+                                    },
+                                    "years": { 
+                                        "type": "number",
+                                        "description": "Years of experience with this skill"
+                                    },
+                                    "level": { 
+                                        "type": "string",
+                                        "description": "Required proficiency level"
+                                    },
+                                    "required": { 
+                                        "type": "boolean",
+                                        "description": "Whether this is required or preferred"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                // Required skills
+                "skills": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "name": { 
+                                "type": "string",
+                                "description": "Skill name"
+                            },
+                            "category": { 
+                                "type": "string",
+                                "description": "Skill category (e.g., technical, soft)"
+                            },
+                            "level": { 
+                                "type": "string",
+                                "description": "Required proficiency level"
+                            },
+                            "required": { 
+                                "type": "boolean",
+                                "description": "Whether this is required or preferred"
+                            }
+                        }
+                    }
+                },
+                // Required certifications
+                "certifications": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "name": { 
+                                "type": "string",
+                                "description": "Certification name"
+                            },
+                            "required": { 
+                                "type": "boolean",
+                                "description": "Whether this is required or preferred"
+                            },
+                            "timeframe": { 
+                                "type": "string",
+                                "description": "When certification must be obtained"
+                            }
+                        }
+                    }
+                },
+                // Security clearances
+                "clearances": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "type": { 
+                                "type": "string",
+                                "description": "Type of clearance required"
+                            },
+                            "required": { 
+                                "type": "boolean",
+                                "description": "Whether this is required or preferred"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+
+        // Job description content
+        "description": {
+            "type": "object",
+            "properties": {
+                "overview": { 
+                    "type": "string",
+                    "description": "General position overview"
+                },
+                "responsibilities": {
+                    "type": "array",
+                    "items": { 
+                        "type": "string",
+                        "description": "Individual job responsibilities"
+                    }
+                },
+                "qualifications": {
+                    "type": "object",
+                    "properties": {
+                        "required": {
+                            "type": "array",
+                            "items": { 
+                                "type": "string",
+                                "description": "Required qualifications"
+                            }
+                        },
+                        "preferred": {
+                            "type": "array",
+                            "items": { 
+                                "type": "string",
+                                "description": "Preferred qualifications"
+                            }
+                        }
+                    }
+                },
+                "additionalNotes": {
+                    "type": "array",
+                    "items": { 
+                        "type": "string",
+                        "description": "Additional information or notes"
+                    }
+                }
+            }
+        },
+
+        // Application process
+        "application": {
+            "type": "object",
+            "properties": {
+                "process": {
+                    "type": "string",
+                    "enum": ["direct", "referral", "agency"],
+                    "description": "Application submission method"
+                },
+                "url": { 
+                    "type": "string",
+                    "description": "Application submission URL"
+                },
+                "instructions": { 
+                    "type": "string",
+                    "description": "Special application instructions"
+                },
+                "documents": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "type": { 
+                                "type": "string",
+                                "description": "Required document type"
+                            },
+                            "required": { 
+                                "type": "boolean",
+                                "description": "Whether this document is required"
+                            }
+                        }
+                    }
+                },
+                "deadline": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "Application deadline"
+                }
+            }
+        }
+    },
+
+    // Required top-level properties
+    "required": ["jobPostingId", "metadata", "position", "organization", "description"]
+}

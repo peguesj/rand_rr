@@ -1,0 +1,121 @@
+{
+    "parsedResumeId": "1",
+    "source": {
+      "type": "PDF",
+      "rawResumeId": "Copy_of_Pegues_Jeremiah_Res_Draft.pdf"
+    },
+    "dateParsed": "2025-02-17T00:00:00Z",
+    "parseTime": "0.5s",
+    "data": {
+      "personalInfo": {
+        "id": "personal_1",
+        "name": "Jeremiah Pegues",
+        "contactDetails": {
+          "id": "contact_1",
+          "email": "jeremiah@pegues.io",
+          "phoneNumber": "(917) 690-5011",
+          "address": "New York, NY",
+          "linkedin": "https://www.linkedin.com/in/jeremiahpegues"
+        }
+      },
+      "summary": {
+        "id": "summary_1",
+        "content": "Cybersecurity and IT Security Specialist with 10+ years of experience in endpoint security, data loss prevention, threat detection, and risk mitigation across enterprise environments. Skilled in security policy enforcement, authentication solutions, and system migrations, enhancing data protection for 100K+ endpoints."
+      },
+      "workExperience": {
+        "id": "work_1",
+        "items": [
+          {
+            "id": "exp_1",
+            "position": "Manager, Data Security",
+            "company": "Capital One Financial Corporation",
+            "start_date": "2024-02-01",
+            "end_date": "2025-02-01",
+            "currentRole": true,
+            "operations": [
+              "Implemented advanced DLP controls across SaaS and IaaS environments.",
+              "Directed an Agile team to execute a strategic plan and conduct risk assessments.",
+              "Spearheaded onboarding of 24/7 support for DLP Engineering services."
+            ],
+            "achievements": [
+              "Enhanced GDPR and HIPAA compliance by 30%.",
+              "Optimized DLP infrastructure post-security audit, reducing response times by 15%.",
+              "Boosted stakeholder engagement and technical proficiency by 30%."
+            ]
+          },
+          {
+            "id": "exp_2",
+            "position": "Senior Security Consultant",
+            "company": "Amazon Web Services",
+            "start_date": "2022-08-01",
+            "end_date": "2023-09-01",
+            "currentRole": false,
+            "operations": [
+              "Enhanced clients' security posture by implementing AWS security best practices.",
+              "Led AWS migration for Fortune 1000 companies.",
+              "Modernized and refactored legacy applications using AWS Lambda and ECS."
+            ],
+            "achievements": [
+              "Increased endpoint compliance to 97% for workstations and 100% for servers.",
+              "Achieved significant cost savings through application modernization.",
+              "Ensured full compliance with security frameworks by integrating AWS security services."
+            ]
+          }
+        ]
+      },
+      "skills": {
+        "id": "skills_1",
+        "items": [
+          { "id": "skill_1", "skill": "Endpoint Security" },
+          { "id": "skill_2", "skill": "Data Protection" },
+          { "id": "skill_3", "skill": "Threat Detection" },
+          { "id": "skill_4", "skill": "Cybersecurity Strategy" },
+          { "id": "skill_5", "skill": "Incident Response" },
+          { "id": "skill_6", "skill": "Machine Learning" },
+          { "id": "skill_7", "skill": "Security Policy Development" }
+        ]
+      },
+      "education": {
+        "id": "edu_1",
+        "items": [
+          {
+            "id": "edu_item_1",
+            "degree": "Bachelor of Science, Computer Science",
+            "institution": "St. John’s University",
+            "start_date": "N/A",
+            "end_date": "N/A",
+            "description": "Completed coursework in cybersecurity, networking, and IT infrastructure."
+          }
+        ]
+      },
+      "certifications": {
+        "id": "cert_1",
+        "items": [
+          {
+            "id": "cert_1",
+            "name": "Symantec Data Loss Prevention 15.5",
+            "institution": "Symantec",
+            "date": "N/A"
+          },
+          {
+            "id": "cert_2",
+            "name": "Certified Information Systems Security Professional",
+            "institution": "ISC2",
+            "date": "N/A"
+          },
+          {
+            "id": "cert_3",
+            "name": "AWS Certified Solutions Architect Associate",
+            "institution": "AWS",
+            "date": "N/A"
+          },
+          {
+            "id": "cert_4",
+            "name": "Certified Cloud Security Professional",
+            "institution": "ISC2",
+            "date": "N/A"
+          }
+        ]
+      }
+    }
+  }

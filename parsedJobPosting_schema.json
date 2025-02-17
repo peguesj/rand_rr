@@ -1,0 +1,293 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "https://pegues.io/schemas/jobposting/v1.0.0",
+    "title": "Job Posting Schema",
+    "description": "Schema for structured job posting data with comprehensive classification",
+    "version": "1.0.0",
+    "date": "2025-02-17",
+    "author": "Jeremiah Pegues <jeremiah@pegues.io>",
+    "license": "MIT",
+    "type": "object",
+    "properties": {
+        "jobPostingId": {
+            "type": "string",
+            "description": "Unique identifier for the job posting"
+        },
+        "metadata": {
+            "type": "object",
+            "properties": {
+                "source": {
+                    "type": "string",
+                    "description": "Origin platform of the job posting"
+                },
+                "postDate": {
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "expirationDate": {
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "lastModified": {
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "status": {
+                    "type": "string",
+                    "enum": ["active", "filled", "expired", "draft"]
+                }
+            },
+            "required": ["source", "postDate", "status"]
+        },
+        "position": {
+            "type": "object",
+            "properties": {
+                "title": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "string",
+                    "enum": ["full-time", "part-time", "contract", "temporary", "internship"]
+                },
+                "level": {
+                    "type": "string",
+                    "enum": ["entry", "associate", "mid-senior", "senior", "lead", "principal", "executive"]
+                },
+                "function": {
+                    "type": "string",
+                    "description": "Primary job function/department"
+                },
+                "classification": {
+                    "type": "object",
+                    "properties": {
+                        "industry": {
+                            "type": "string"
+                        },
+                        "category": {
+                            "type": "string"
+                        },
+                        "subcategory": {
+                            "type": "string"
+                        },
+                        "codes": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "system": {
+                                        "type": "string",
+                                        "description": "Classification system (e.g., SOC, NAICS)"
+                                    },
+                                    "code": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "required": ["title", "type", "level"]
+        },
+        "organization": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "department": {
+                    "type": "string"
+                },
+                "location": {
+                    "type": "object",
+                    "properties": {
+                        "type": {
+                            "type": "string",
+                            "enum": ["on-site", "hybrid", "remote"]
+                        },
+                        "primary": {
+                            "type": "object",
+                            "properties": {
+                                "city": { "type": "string" },
+                                "state": { "type": "string" },
+                                "country": { "type": "string" },
+                                "postalCode": { "type": "string" }
+                            }
+                        },
+                        "travelRequired": {
+                            "type": "object",
+                            "properties": {
+                                "percentage": { "type": "number" },
+                                "frequency": { "type": "string" },
+                                "scope": { "type": "string" }
+                            }
+                        }
+                    }
+                }
+            },
+            "required": ["name", "location"]
+        },
+        "compensation": {
+            "type": "object",
+            "properties": {
+                "type": {
+                    "type": "string",
+                    "enum": ["salary", "hourly", "commission", "project-based"]
+                },
+                "range": {
+                    "type": "object",
+                    "properties": {
+                        "minimum": { "type": "number" },
+                        "maximum": { "type": "number" },
+                        "currency": { "type": "string" },
+                        "interval": {
+                            "type": "string",
+                            "enum": ["hourly", "weekly", "monthly", "annual"]
+                        }
+                    }
+                },
+                "benefits": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "category": { "type": "string" },
+                            "description": { "type": "string" }
+                        }
+                    }
+                },
+                "equity": {
+                    "type": "object",
+                    "properties": {
+                        "type": { "type": "string" },
+                        "range": {
+                            "minimum": { "type": "number" },
+                            "maximum": { "type": "number" }
+                        }
+                    }
+                }
+            }
+        },
+        "requirements": {
+            "type": "object",
+            "properties": {
+                "education": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "level": { "type": "string" },
+                            "field": { "type": "string" },
+                            "required": { "type": "boolean" }
+                        }
+                    }
+                },
+                "experience": {
+                    "type": "object",
+                    "properties": {
+                        "minimum": { "type": "number" },
+                        "preferred": { "type": "number" },
+                        "areas": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "skill": { "type": "string" },
+                                    "years": { "type": "number" },
+                                    "level": { "type": "string" },
+                                    "required": { "type": "boolean" }
+                                }
+                            }
+                        }
+                    }
+                },
+                "skills": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "name": { "type": "string" },
+                            "category": { "type": "string" },
+                            "level": { "type": "string" },
+                            "required": { "type": "boolean" }
+                        }
+                    }
+                },
+                "certifications": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "name": { "type": "string" },
+                            "required": { "type": "boolean" },
+                            "timeframe": { "type": "string" }
+                        }
+                    }
+                },
+                "clearances": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "type": { "type": "string" },
+                            "required": { "type": "boolean" }
+                        }
+                    }
+                }
+            }
+        },
+        "description": {
+            "type": "object",
+            "properties": {
+                "overview": { "type": "string" },
+                "responsibilities": {
+                    "type": "array",
+                    "items": { "type": "string" }
+                },
+                "qualifications": {
+                    "type": "object",
+                    "properties": {
+                        "required": {
+                            "type": "array",
+                            "items": { "type": "string" }
+                        },
+                        "preferred": {
+                            "type": "array",
+                            "items": { "type": "string" }
+                        }
+                    }
+                },
+                "additionalNotes": {
+                    "type": "array",
+                    "items": { "type": "string" }
+                }
+            }
+        },
+        "application": {
+            "type": "object",
+            "properties": {
+                "process": {
+                    "type": "string",
+                    "enum": ["direct", "referral", "agency"]
+                },
+                "url": { "type": "string" },
+                "instructions": { "type": "string" },
+                "documents": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "type": { "type": "string" },
+                            "required": { "type": "boolean" }
+                        }
+                    }
+                },
+                "deadline": {
+                    "type": "string",
+                    "format": "date-time"
+                }
+            }
+        }
+    },
+    "required": ["jobPostingId", "metadata", "position", "organization", "description"]
+}
