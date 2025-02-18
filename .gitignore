@@ -6,3 +6,10 @@ dist/
 .env.*
 *.log
 coverage/
+enhanced-resume.json
+jd.json
+jd.txt
+jd2.txt
+jdp.json
+resume.json
+.tmp/processed-job.json

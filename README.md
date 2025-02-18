@@ -1,6 +1,6 @@
-# Finnessume
+# JPres-Gen: Professional Resume Generator
 
-Professional resume generation and management system with dynamic templating and schema validation.
+A professional resume generation and management system with dynamic templating and schema validation.
 
 ## Architecture Overview
 
@@ -86,20 +86,20 @@ package "Editor Interface" {
         [Logo]
         [Settings]
     }
-    
+
     component "Main Content" {
         package "Left Panel" {
             [Editor Controls]
             [Form Fields]
             [JSON Preview]
         }
-        
+
         package "Right Panel" {
             [Resume Preview]
             [Page Controls]
         }
     }
-    
+
     component Footer {
         [Export Options]
         [Status Info]
@@ -186,99 +186,166 @@ deactivate validator
 ## Installation
 
 ```bash
-npm install @pegues/finnessume
+npm install @pyj/finnesse
 ```
 
-## Usage
+## Available Commands
 
-```javascript
-import { renderResume } from '@pegues/finnessume';
-
-// Initialize with resume data
-renderResume(resumeData, targetElement);
-```
-
-## Development
+### Development Commands
 
 ```bash
-# Install dependencies
-npm install
-
-# Start development server
+# Start the development server
 npm start
 
-# Run tests
+# Watch for CSS changes
+npm run watch-css
+
+# Watch for JavaScript changes
+npm run watch-js
+
+# Run tests in watch mode
+npm run test:watch
+```
+
+### Testing Commands
+
+```bash
+# Run all tests with coverage
 npm test
 
-# Build for production
+# Run unit tests only
+npm run test:unit
+
+# Run integration tests
+npm run test:integration
+```
+
+### Build Commands
+
+```bash
+# Build everything
 npm run build
+
+# Build CSS only
+npm run build-css
+
+# Build JavaScript only
+npm run build-js
 ```
 
-## Features
-
-- Dynamic resume editing with real-time preview
-- JSON schema validation
-- Multiple template support
-- PDF export
-- Share via URL
-- Responsive design
-- Custom schema support
-
-## License
-
-MIT © Jeremiah Pegues
-
-# jpres-gen
-
-## Features
-
-### Job Processing
-Converts job descriptions into structured JSON format using OpenAI's GPT-4.
+### Resume Processing
 
 ```bash
+# Process a resume against a job posting
+npm run finesse-resume -- -r /path/to/resume.json -j /path/to/job.json -o output.json
+
+# Process a job posting
 npm run job-process
-```
 
-### Resume Finesse
-Enhances resumes to better match job descriptions while maintaining truthfulness.
-
-```bash
+# Run the finesse service
 npm run finesse
 ```
 
-## API Endpoints
+### Job Processing Commands
 
-### POST /api/job-process
-Converts job description text to structured JSON.
+```bash
+# Process a job posting from text or file
+npm run process-job -- -i "job description text" -o processed-job.json
+# OR
+npm run process-job -- -i job-description.txt -o processed-job.json
 
-Request body:
+# Process a resume against a job posting
+npm run finesse-resume -- -r resume.json -j job.json -o enhanced-resume.json
+```
+
+### Validation Commands
+
+```bash
+# Validate schemas
+npm run validate:schema
+
+# Validate general content
+npm run validate
+```
+
+### Code Quality Commands
+
+```bash
+# Format code
+npm run format
+
+# Run linter
+npm run lint
+```
+
+### Publishing Commands
+
+```bash
+# Prepare for publishing
+npm run prepublishOnly
+
+# Publish to npm
+npm run publish-npm
+
+# Create a new release
+npm run release
+```
+
+## Examples
+
+### Processing a Resume
+
+1. Create a resume JSON file (resume.json):
+
 ```json
 {
-  "content": "Job description text"
+  "name": "John Doe",
+  "title": "Software Engineer",
+  "skills": ["JavaScript", "TypeScript", "Node.js"],
+  "experience": [
+    {
+      "title": "Senior Developer",
+      "company": "Tech Corp",
+      "duration": "2 years"
+    }
+  ]
 }
 ```
 
-### POST /api/finesse
-Enhances resume based on job posting.
+2. Create a job posting JSON file (job.json):
 
-Request body:
 ```json
 {
-  "content": {
-    "parsedResume": {},
-    "parsedJobPosting": {}
-  },
-  "exactRole": boolean
+  "title": "Senior Software Engineer",
+  "company": "Innovation Inc",
+  "requirements": ["JavaScript", "Node.js", "AWS"],
+  "responsibilities": ["Lead development", "Code review"]
 }
+```
+
+3. Run the finesse command:
+
+```bash
+npm run finesse-resume -- -r resume.json -j job.json -o enhanced-resume.json
 ```
 
 ## Environment Variables
-- OPENAI_API_KEY: Your OpenAI API key
 
-## Logging
-Logs are written to:
-- console (all levels)
-- error.log (error level)
-- combined.log (all levels)
+Create a `.env` file with:
 
-Logs follow syslog format with JSON structure.
+```
+OPENAI_API_KEY=your_api_key_here
+```
+
+## Contributing
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Run tests (`npm test`)
+4. Commit your changes (`git commit -m 'Add amazing feature'`)
+5. Push to the branch (`git push origin feature/amazing-feature`)
+6. Open a Pull Request
+
+## License
+
+MIT License - see LICENSE file for details
