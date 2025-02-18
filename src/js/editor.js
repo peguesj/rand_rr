@@ -20,43 +20,112 @@
         author: 'Jeremiah Pegues <jeremiah@pegues.io>'
     };
 
+    // Add these constants at the top with other constants
+    const DEFAULT_MARGINS = {
+        letter: { top: 1, bottom: 1, left: 1, right: 1 },
+        legal: { top: 1, bottom: 1, left: 1, right: 1 },
+        a4: { top: 25.4, bottom: 25.4, left: 25.4, right: 25.4 }
+    };
+
+    // Update DEFAULT_RESUME constant
+    const DEFAULT_RESUME = {
+        data: {
+            personalInfo: {
+                name: "JEREMIAH PEGUES",
+                contactDetails: {
+                    email: "jeremiah@pegues.io",
+                    phoneNumber: "(609) 535-0086",
+                    address: "Jersey City, NJ 07302"
+                }
+            },
+            summary: {
+                content: "Senior Software Engineer with extensive experience in enterprise application development, cloud architecture, and team leadership. Proven track record of delivering high-impact solutions and mentoring junior developers."
+            },
+            skills: {
+                items: [
+                    { id: "skill1", skill: "Java/Spring Boot" },
+                    { id: "skill2", skill: "Node.js/Express" },
+                    { id: "skill3", skill: "React/Redux" },
+                    { id: "skill4", skill: "AWS/Cloud Architecture" },
+                    { id: "skill5", skill: "CI/CD & DevOps" },
+                    { id: "skill6", skill: "System Design" }
+                ]
+            },
+            experience: {
+                items: [
+                    {
+                        id: "exp1",
+                        title: "Senior Software Engineer",
+                        company: "Pegues OPSCORP",
+                        startDate: "2020",
+                        endDate: "Present",
+                        highlights: [
+                            "Led development of enterprise-scale microservices architecture",
+                            "Implemented CI/CD pipelines reducing deployment time by 60%",
+                            "Mentored junior developers and conducted code reviews"
+                        ]
+                    }
+                ]
+            }
+        }
+    };
+
     // State management
     let currentResume = null;
     let updateTimer = null;
+    let initialized = false;
     
     // Initialize editor
-    function initEditor() {
-        // First load the resume, then initialize the rest
-        loadDefaultResume().then(() => {
-            loadSavedTheme();
+    async function initEditor() {
+        try {
+            // Ensure DOM is fully loaded
+            if (!document.body) {
+                setTimeout(initEditor, 100);
+                return;
+            }
+
+            // Prevent multiple initializations
+            if (initialized) return;
+            initialized = true;
+
+            // Load resume first
+            await loadDefaultResume();
+            
+            // Then initialize UI
             bindEvents();
             setupAutoUpdate();
             setupScrollEffects();
-        });
+
+            console.log('Editor initialized successfully');
+        } catch (error) {
+            console.error('Editor initialization failed:', error);
+            $('#previewPane').html(`
+                <div class="alert alert-danger">
+                    Failed to initialize editor. Please refresh the page.
+                    <br>Error: ${error.message}
+                </div>
+            `);
+        }
     }
 
-    // Load default resume
-    function loadDefaultResume() {
-        return new Promise((resolve, reject) => {
-            $.getJSON('../data/examples/resume.json')
-                .done(function(data) {
-                    currentResume = data;
-                    updateEditorFields();
-                    updateJsonPreview();
-                    updatePreview();
-                    // Update last loaded info
-                    const now = new Date();
-                    const timestamp = now.toLocaleString('en-US', {
-                        hour12: true,
-                        hour: 'numeric',
-                        minute: 'numeric',
-                        second: 'numeric'
-                    });
-                    $('#lastUpdatedText').html(`loaded default <span class="text-primary">resume.json</span> v${CONFIG.version} @ ${timestamp}`);
-                    resolve();
-                })
-                .fail(reject);
-        });
+    // Update loadDefaultResume function
+    async function loadDefaultResume() {
+        try {
+            // Update path to point to the example resume
+            const response = await fetch('../src/data/examples/resume.json');
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            currentResume = await response.json();
+        } catch (error) {
+            console.warn('Failed to load example resume:', error);
+            // Fallback to default data if example can't be loaded
+            currentResume = DEFAULT_RESUME;
+        }
+        
+        updateEditorFields();
+        updateJsonPreview();
+        updatePreview();
     }
 
     // Create editor fields dynamically
@@ -190,60 +259,86 @@
         updateLastModified();
     }
 
-    // Update preview pane
+    // Update preview pane with error handling
     function updatePreview() {
         const previewFrame = $('#previewPane');
-        previewFrame.empty();
+        if (!previewFrame.length) return;
 
-        // Guard against no resume data
-        if (!currentResume || !currentResume.data) {
-            previewFrame.html('<div class="alert alert-warning">No resume data loaded</div>');
-            return;
-        }
-
-        const pageFormat = $('#pageFormat').val() || 'letter';
-        
-        // Create content container
-        const $content = $('<div class="resume-content doc-content"></div>');
-        
         try {
-            // Use exposed renderResume function
-            window.renderResume(currentResume, $content[0]);
+            previewFrame.empty();
             
-            if (pageFormat === 'none') {
-                // Regular preview
-                previewFrame.append($content);
-            } else {
-                // Paginated preview
-                const contentHeight = pageFormat === 'letter' ? '11in' : '14in';
-                const $pages = splitIntoPages($content, contentHeight);
-                
-                $pages.forEach($page => {
-                    const $pageDiv = $(`<div class="page-preview ${pageFormat}"></div>`);
-                    $pageDiv.append($page);
-                    previewFrame.append($pageDiv);
-                });
+            if (!currentResume || !currentResume.data) {
+                throw new Error('No resume data available');
             }
+
+            // Add necessary wrapper classes
+            previewFrame.addClass('doc-content');
+            
+            // Apply page format
+            const format = $('#pageFormat').val() || 'letter';
+            previewFrame.removeClass('page-format-letter page-format-legal page-format-a4')
+                        .addClass(`page-format-${format}`);
+            
+            // Create content container
+            const $content = $('<div class="resume-content"></div>');
+            
+            // Render resume into content container
+            if (typeof window.renderResume !== 'function') {
+                throw new Error('Resume renderer not loaded');
+            }
+            window.renderResume(currentResume, $content[0]);
+
+            // Show page breaks if enabled
+            if ($('#showPageBreaks').is(':checked')) {
+                const pageHeight = format === 'letter' ? '11in' : (format === 'legal' ? '14in' : '297mm');
+                const pages = splitIntoPages($content, pageHeight);
+                
+                pages.forEach((page, index) => {
+                    previewFrame.append(page);
+                    if (index < pages.length - 1) {
+                        previewFrame.append('<div class="page-break-indicator"></div>');
+                    }
+                });
+            } else {
+                previewFrame.append($content);
+            }
+
+            // Add margin indicators if enabled
+            if ($('#showMargins').is(':checked')) {
+                previewFrame.append(`
+                    <div class="margin-indicator margin-indicator-top"></div>
+                    <div class="margin-indicator margin-indicator-bottom"></div>
+                    <div class="margin-indicator margin-indicator-left"></div>
+                    <div class="margin-indicator margin-indicator-right"></div>
+                `);
+            }
+
         } catch (error) {
-            console.error('Preview rendering failed:', error);
-            previewFrame.html('<div class="alert alert-danger">Preview rendering failed: ' + error.message + '</div>');
+            console.error('Preview update failed:', error);
+            previewFrame.html(`
+                <div class="alert alert-danger">
+                    Failed to update preview.
+                    <br>Error: ${error.message}
+                </div>
+            `);
         }
     }
 
     // Split content into pages
     function splitIntoPages($content, pageHeight) {
         const pages = [];
-        let $currentPage = $('<div></div>');
+        const contentHeight = parseFloat(pageHeight) * 96; // Convert to pixels (96dpi)
+        let $currentPage = $('<div class="resume-page"></div>');
         let currentHeight = 0;
-        const targetHeight = parseFloat(pageHeight) * 96; // Convert inches to pixels (96dpi)
 
         $content.children().each(function() {
             const $elem = $(this);
             const elemHeight = $elem.outerHeight(true);
 
-            if (currentHeight + elemHeight > targetHeight) {
+            if (currentHeight + elemHeight > contentHeight && currentHeight > 0) {
+                // Start new page
                 pages.push($currentPage);
-                $currentPage = $('<div></div>');
+                $currentPage = $('<div class="resume-page"></div>');
                 currentHeight = 0;
             }
 
@@ -251,6 +346,7 @@
             currentHeight += elemHeight;
         });
 
+        // Add last page if it has content
         if ($currentPage.children().length > 0) {
             pages.push($currentPage);
         }
@@ -268,7 +364,23 @@
 
     // Update last modified timestamp
     function updateLastModified() {
-        $('#lastUpdated').text(new Date().toLocaleTimeString());
+        const now = new Date();
+        const options = { 
+            year: 'numeric', 
+            month: 'short', 
+            day: 'numeric', 
+            hour: '2-digit', 
+            minute: '2-digit' 
+        };
+        $('#lastUpdated').text(now.toLocaleString('en-US', options));
+        
+        // Update footer year dynamically
+        const currentYear = now.getFullYear();
+        $('.footer-branding').html(`
+            <strong>"Finnessume"</strong> is a Pegues OPSCORP Labs Experiment<br>
+            © 2021-${currentYear} Pegues OPSCORP. For research and demonstration.<br>
+            Made with <span class="footer-heart">❤️</span> in Jersey City
+        `);
     }
 
     // Update schema info
@@ -286,7 +398,18 @@
         // Remove schema-related event bindings
         $('#downloadPDF').click(() => {
             const element = document.querySelector('#previewPane');
-            html2pdf().from(element).save('resume.pdf');
+            const format = $('#pageFormat').val() || 'letter';
+            const opt = {
+                margin: [25.4, 25.4, 25.4, 25.4], // 1 inch margins in mm
+                filename: 'resume.pdf',
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2 },
+                jsPDF: { 
+                    unit: 'mm', 
+                    format: format === 'a4' ? 'a4' : [215.9, format === 'legal' ? 355.6 : 279.4] // Convert inches to mm
+                }
+            };
+            html2pdf().set(opt).from(element).save();
         });
 
         $('#shareLink').click(() => {
@@ -347,21 +470,54 @@
             $(this).find('.collapse-icon').toggleClass('collapsed');
         });
 
-        // Settings toggle
-        $('#settingsToggle').click(function() {
-            $('#settingsMenu').toggleClass('show');
+        // Settings toggle - Fix
+        $('#settingsToggle').on('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            const menu = $('#settingsMenu');
+            menu.toggleClass('show');
+            $(this).toggleClass('active');
         });
 
-        // Close settings
-        $('#settingsMenu .btn-close').click(function() {
-            $('#settingsMenu').removeClass('show');
-        });
-
-        // Click outside to close
-        $(document).click(function(e) {
+        // Close settings menu when clicking outside
+        $(document).on('click', function(e) {
             if (!$(e.target).closest('#settingsMenu, #settingsToggle').length) {
                 $('#settingsMenu').removeClass('show');
+                $('#settingsToggle').removeClass('active');
             }
+        });
+
+        // Prevent menu close when clicking inside
+        $('#settingsMenu').on('click', function(e) {
+            e.stopPropagation();
+        });
+
+        // Handle collapse sections
+        $('.section-header').on('click', function() {
+            const icon = $(this).find('.collapse-icon');
+            icon.toggleClass('collapsed');
+            $(this).next('.section-content').collapse('toggle');
+        });
+
+        // Settings toggle - Update this section
+        $('#settingsToggle').on('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            $('#settingsMenu').toggleClass('show');
+            $(this).toggleClass('active');
+        });
+
+        // Close settings when clicking outside
+        $(document).on('click', function(e) {
+            if (!$(e.target).closest('#settingsMenu, #settingsToggle').length) {
+                $('#settingsMenu').removeClass('show');
+                $('#settingsToggle').removeClass('active');
+            }
+        });
+
+        // Prevent settings menu from closing when clicking inside it
+        $('#settingsMenu').on('click', function(e) {
+            e.stopPropagation();
         });
 
         // Initialize tooltips
@@ -399,6 +555,80 @@
 
         // Initialize schema info
         updateSchemaInfo();
+
+        // Margin controls
+        $('#showMargins').change(function() {
+            const showMargins = $(this).is(':checked');
+            $('#marginControls').toggle(showMargins);
+            updatePreviewLayout();
+        });
+
+        $('#showPageBreaks').change(function() {
+            updatePreviewLayout();
+        });
+
+        // Margin value changes
+        $('.input-group input[type="number"]').on('input', function() {
+            updatePreviewLayout();
+        });
+
+        // Match margins buttons
+        $('#matchHorizontal').click(function() {
+            const leftMargin = $('#marginLeft').val();
+            $('#marginRight').val(leftMargin);
+            updatePreviewLayout();
+        });
+
+        $('#matchVertical').click(function() {
+            const topMargin = $('#marginTop').val();
+            $('#marginBottom').val(topMargin);
+            updatePreviewLayout();
+        });
+
+        $('#defaultMargins').click(function() {
+            const format = $('#pageFormat').val();
+            const defaults = DEFAULT_MARGINS[format];
+            const unit = format === 'a4' ? 'mm' : 'in';
+            
+            Object.entries(defaults).forEach(([side, value]) => {
+                $(`#margin${side.charAt(0).toUpperCase() + side.slice(1)}`).val(value);
+            });
+            
+            updatePreviewLayout();
+        });
+
+        // Update margins when page format changes
+        $('#pageFormat').change(function() {
+            const format = $(this).val();
+            if ($('#defaultMargins').is(':checked')) {
+                const defaults = DEFAULT_MARGINS[format];
+                Object.entries(defaults).forEach(([side, value]) => {
+                    $(`#margin${side.charAt(0).toUpperCase() + side.slice(1)}`).val(value);
+                });
+            }
+            updatePreviewLayout();
+        });
+    }
+
+    function updatePreviewLayout() {
+        const showMargins = $('#showMargins').is(':checked');
+        const showPageBreaks = $('#showPageBreaks').is(':checked');
+        const format = $('#pageFormat').val();
+        
+        const $preview = $('#previewPane');
+        $preview.toggleClass('show-margins', showMargins);
+        $preview.toggleClass('show-page-breaks', showPageBreaks);
+        
+        // Update CSS variables for margins
+        if (showMargins) {
+            const unit = format === 'a4' ? 'mm' : 'in';
+            document.documentElement.style.setProperty('--margin-top', `${$('#marginTop').val()}${unit}`);
+            document.documentElement.style.setProperty('--margin-bottom', `${$('#marginBottom').val()}${unit}`);
+            document.documentElement.style.setProperty('--margin-left', `${$('#marginLeft').val()}${unit}`);
+            document.documentElement.style.setProperty('--margin-right', `${$('#marginRight').val()}${unit}`);
+        }
+        
+        updatePreview();
     }
 
     function loadSavedTheme() {
@@ -408,9 +638,13 @@
     }
 
     function applyTheme(themeName) {
-        document.body.className = `theme-${themeName}`;
+        // Update editor interface
+        $('.editor-interface').attr('data-theme', themeName);
         
-        // Font mappings for different themes
+        // Update theme-specific styles
+        document.documentElement.style.setProperty('--theme', themeName);
+        
+        // Font mappings remain unchanged
         const fonts = {
             'default': {
                 primary: 'Inter',
@@ -431,9 +665,10 @@
 
         const theme = fonts[themeName] || fonts.default;
         
-        document.documentElement.style.setProperty('--font-primary', theme.primary);
-        document.documentElement.style.setProperty('--font-heading', theme.heading);
-        document.documentElement.style.setProperty('--heading-weight', theme.weight);
+        // Apply only to editor elements, not preview
+        document.documentElement.style.setProperty('--editor-font-primary', theme.primary);
+        document.documentElement.style.setProperty('--editor-font-heading', theme.heading);
+        document.documentElement.style.setProperty('--editor-heading-weight', theme.weight);
         
         localStorage.setItem('selectedTheme', themeName);
         updatePreview();
@@ -459,7 +694,15 @@
         });
     }
 
-    // Initialize on document ready
-    $(document).ready(initEditor);
+    // Initialize when document is ready
+    $(document).ready(function() {
+        // Add error boundary
+        window.onerror = function(msg, url, lineNo, columnNo, error) {
+            console.error('Global error:', {msg, url, lineNo, columnNo, error});
+            return false;
+        };
+
+        initEditor().catch(console.error);
+    });
 
 })(jQuery);

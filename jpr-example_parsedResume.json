@@ -1,121 +1,166 @@
 {
-    "parsedResumeId": "1",
+    "parsedResumeId": "resume1",
     "source": {
-      "type": "PDF",
-      "rawResumeId": "Copy_of_Pegues_Jeremiah_Res_Draft.pdf"
+      "type": "html",
+      "rawResumeId": "CopyofPegues_Jeremiah_Res_Draft.html"
     },
-    "dateParsed": "2025-02-17T00:00:00Z",
-    "parseTime": "0.5s",
+    "dateParsed": "2023-10-10T12:00:00Z",
+    "parseTime": "2 seconds",
     "data": {
       "personalInfo": {
-        "id": "personal_1",
-        "name": "Jeremiah Pegues",
+        "id": "personal1",
+        "name": "JEREMIAH PEGUES",
         "contactDetails": {
-          "id": "contact_1",
+          "id": "contact1",
           "email": "jeremiah@pegues.io",
           "phoneNumber": "(917) 690-5011",
-          "address": "New York, NY",
-          "linkedin": "https://www.linkedin.com/in/jeremiahpegues"
+          "address": "New York, NY"
         }
       },
       "summary": {
-        "id": "summary_1",
-        "content": "Cybersecurity and IT Security Specialist with 10+ years of experience in endpoint security, data loss prevention, threat detection, and risk mitigation across enterprise environments. Skilled in security policy enforcement, authentication solutions, and system migrations, enhancing data protection for 100K+ endpoints."
+        "id": "summary1",
+        "content": "Cybersecurity and IT Security Specialist with 10+ years of experience in endpoint security, data loss prevention, threat detection, and risk mitigation across enterprise environments. Skilled in security policy enforcement, authentication solutions, and system migrations, enhancing data protection for 100K+ endpoints. A strategic problem solver and leader, adept at optimizing security frameworks, reducing vulnerabilities, and driving operational efficiency in complex infrastructures."
       },
       "workExperience": {
-        "id": "work_1",
+        "id": "workExp1",
+        "display": "traditional",
         "items": [
           {
-            "id": "exp_1",
-            "position": "Manager, Data Security",
+            "id": "we1",
+            "position": "MANAGER, DATA SECURITY",
             "company": "Capital One Financial Corporation",
             "start_date": "2024-02-01",
             "end_date": "2025-02-01",
-            "currentRole": true,
             "operations": [
-              "Implemented advanced DLP controls across SaaS and IaaS environments.",
-              "Directed an Agile team to execute a strategic plan and conduct risk assessments.",
-              "Spearheaded onboarding of 24/7 support for DLP Engineering services."
+              "Implemented advanced Data Loss Prevention (DLP) controls across SaaS and IaaS environments, strengthening security post-incident and reducing unauthorized data access, enhancing compliance, and mitigating risks to protect sensitive information.",
+              "Directed an Agile team to execute a strategic plan, conduct risk assessments, and implement advanced DLP tools, reducing unauthorized data access incidents and strengthening cybersecurity posture across enterprise environments.",
+              "Spearheaded the onboarding of 24/7 support for DLP Engineering services on the Symantec DLP platform, creating runbooks and triage instructions, increasing engineering resource availability by 30% through streamlined processes and stakeholder alignment."
             ],
             "achievements": [
-              "Enhanced GDPR and HIPAA compliance by 30%.",
-              "Optimized DLP infrastructure post-security audit, reducing response times by 15%.",
-              "Boosted stakeholder engagement and technical proficiency by 30%."
+              "Enhanced GDPR and HIPAA compliance by 30% and improved system scalability by 25% by conducting technical analysis, rectifying vulnerabilities, and implementing secure, scalable DLP solutions using DevOps practices.",
+              "Optimized DLP infrastructure post-security audit using ITIL best practices, implementing strategic upgrades that improved operational efficiency, reduced response times by 15%, and accelerated incident processing speed by 4x.",
+              "Boosted stakeholder engagement and technical proficiency by 30% through leading Symantec DLP upgrades, optimizing platform performance, and delivering comprehensive training programs to enhance adoption and security best practices.",
+              "Reduced data handling errors by 43% in six months by launching a DLP awareness initiative, designing workshops, and implementing change management strategies to strengthen data security and organizational best practices."
             ]
           },
           {
-            "id": "exp_2",
-            "position": "Senior Security Consultant",
-            "company": "Amazon Web Services",
+            "id": "we2",
+            "position": "SENIOR SECURITY CONSULTANT",
+            "company": "Amazon Web Services (AWS ProServe)",
             "start_date": "2022-08-01",
             "end_date": "2023-09-01",
-            "currentRole": false,
             "operations": [
-              "Enhanced clients' security posture by implementing AWS security best practices.",
-              "Led AWS migration for Fortune 1000 companies.",
-              "Modernized and refactored legacy applications using AWS Lambda and ECS."
+              "Enhanced clients' security posture by implementing AWS security best practices, leveraging AWS WAF, Shield, and Inspector, ensuring GDPR, HIPAA, and PCI DSS compliance, and mitigating vulnerabilities to strengthen cloud resilience.",
+              "Led Fortune 1000 companies in AWS migration, implementing a well-architected framework and secure-by-design principles, resulting in scalable, secure, and compliant cloud architectures that enhanced performance and regulatory adherence.",
+              "Modernized and refactored legacy applications using AWS Lambda, ECS, and API Gateway, boosting performance, increasing scalability, and reducing operational costs, enabling clients to achieve greater efficiency and cloud optimization."
             ],
             "achievements": [
-              "Increased endpoint compliance to 97% for workstations and 100% for servers.",
-              "Achieved significant cost savings through application modernization.",
-              "Ensured full compliance with security frameworks by integrating AWS security services."
+              "Increased endpoint compliance to 97% for workstations and 100% for servers by managing business transformation projects and implementing security solutions, enhancing overall security posture and regulatory adherence.",
+              "Achieved significant cost savings and optimized resource utilization by developing and executing application modernization strategies, analyzing workloads, right-sizing resources, and leveraging EC2 Reserved Instances and Savings Plans for efficiency.",
+              "Ensured full compliance with security frameworks by integrating AWS security services, eliminating compliance gaps, and strengthening clients' security posture to meet regulatory standards and mitigate risks."
+            ]
+          },
+          {
+            "id": "we3",
+            "position": "SENIOR SECURITY ENGINEER",
+            "company": "Country Financial",
+            "start_date": "2017-08-01",
+            "end_date": "2022-08-01",
+            "operations": [
+              "Led, mentored, and developed a 12-member team, setting clear security metrics, enhancing accountability, and driving cross-division efforts to complete security engineering deliverables ahead of schedule through hands-on guidance and coaching.",
+              "Developed high-quality security engineering documentation and knowledgebase articles, collaborating with SMEs to create installation, remediation, and incident response workflows, enhancing user understanding of architecture and technical solution dynamics.",
+              "Improved security architecture understanding by developing technical documentation and workflows and collaborating with SMEs to create installation, remediation, and incident response guides for enhanced solution adoption."
+            ],
+            "achievements": [
+              "Reduced budget needs by $320K in eight months by developing cloud security strategies, optimizing Azure interoperability, collaborating with network security/IAM teams, and designing a capability matrix to assess business-aligned solutions.",
+              "Achieved 97% workstation and 100% server compliance, increasing data loss incident response efficacy by 400% in three years by managing security transformation projects, analyzing risks, and leading cross-functional solution execution.",
+              "Resolved an audit finding nine months early by identifying high-risk areas, devising a data security framework, conducting risk audits, refining policies, and enhancing the visibility of structured and unstructured data flows."
+            ]
+          },
+          {
+            "id": "we4",
+            "position": "SECURITY ENGINEER I",
+            "company": "Ciphertechs Inc",
+            "start_date": "2015-04-01",
+            "end_date": "2017-05-01",
+            "operations": [
+              "Led managed service implementations and security upgrades, enforcing security policies via ePO to drive encryption and prevent data loss, securing over 100K endpoints, and ensuring compliance with industry standards.",
+              "Developed agent-less authentication and asset classification, enabling secure multi-domain user access within shared workspaces, reducing security risks, and implementing policies to approve, deny, or limit network access for enhanced corporate security."
+            ],
+            "achievements": [
+              "Upgraded 17K+ endpoints from McAfee OVSEQ to Endpoint Security 10.5, designing a seamless migration path, optimizing policy compatibility, eliminating inactive policies, and enabling advanced machine learning and containment capabilities for enhanced security.",
+              "Reduced false positives by >80% by identifying false negatives in security applications, fine-tuning ESM parsers, and integrating custom parsers to enhance UEBA accuracy and deliver highly correlated security event detection."
+            ]
+          },
+          {
+            "id": "we5",
+            "position": "PRODUCT LEAD, Wercflow App",
+            "company": "Werc FTP (formerly Treauu Inc)",
+            "start_date": "2015-04-01",
+            "end_date": "2017-05-01",
+            "operations": [
+              "Transformed development priorities into a market-aligned MVP by analyzing the competitive landscape and target audience, ensuring the product met end-user needs and preferences.",
+              "Defined user stories and acceptance criteria, reducing technical debt during MVP to v1 transition, ensuring design consistency and efficient feature implementation."
+            ],
+            "achievements": [
+              "Revamped iOS-web integrations, migrating key mobile components from Unity to Swift and Swift UI, enhancing native compatibility, optimizing large media handling, and boosting mobile response time for a seamless user experience.",
+              "Managed and coordinated SDLC for MVP and Beta releases, leveraging agile methodologies to mitigate risks, ensure on-time delivery, and improve functional testing coverage to approximately 90% per sprint.",
+              "Provided technical leadership to a globally distributed team of 9-12 developers, establishing best practices and a collaborative culture that increased efficiency, strengthened commitment, and enhanced overall team performance."
             ]
           }
         ]
       },
       "skills": {
-        "id": "skills_1",
+        "id": "skills1",
         "items": [
-          { "id": "skill_1", "skill": "Endpoint Security" },
-          { "id": "skill_2", "skill": "Data Protection" },
-          { "id": "skill_3", "skill": "Threat Detection" },
-          { "id": "skill_4", "skill": "Cybersecurity Strategy" },
-          { "id": "skill_5", "skill": "Incident Response" },
-          { "id": "skill_6", "skill": "Machine Learning" },
-          { "id": "skill_7", "skill": "Security Policy Development" }
+          { "id": "skill1", "skill": "Endpoint Security" },
+          { "id": "skill2", "skill": "Data Protection" },
+          { "id": "skill3", "skill": "Threat Detection" },
+          { "id": "skill4", "skill": "IT Infrastructure" },
+          { "id": "skill5", "skill": "System Migration" },
+          { "id": "skill6", "skill": "Cybersecurity Strategy" },
+          { "id": "skill7", "skill": "Machine Learning" },
+          { "id": "skill8", "skill": "Automation" },
+          { "id": "skill9", "skill": "Incident Response" },
+          { "id": "skill10", "skill": "Risk Mitigation" },
+          { "id": "skill11", "skill": "Security Information & Even Management (SIEM)" },
+          { "id": "skill12", "skill": "Team Collaboration" },
+          { "id": "skill13", "skill": "Security Policy Development & Enforcement" },
+          { "id": "skill14", "skill": "Network Security" },
+          { "id": "skill15", "skill": "Policy Optimization" },
+          { "id": "skill16", "skill": "Compliance" }
         ]
       },
       "education": {
-        "id": "edu_1",
+        "id": "edu1",
         "items": [
           {
-            "id": "edu_item_1",
-            "degree": "Bachelor of Science, Computer Science",
-            "institution": "St. John’s University",
-            "start_date": "N/A",
-            "end_date": "N/A",
-            "description": "Completed coursework in cybersecurity, networking, and IT infrastructure."
+            "id": "eduEntry1",
+            "degree": "Bachelor of Science in Computer Science",
+            "institution": "St. John's University",
+            "start_date": "2013-09-01",
+            "end_date": "2017-05-01",
+            "description": ""
           }
         ]
       },
       "certifications": {
-        "id": "cert_1",
+        "id": "certs1",
         "items": [
           {
-            "id": "cert_1",
+            "id": "cert1",
             "name": "Symantec Data Loss Prevention 15.5",
             "institution": "Symantec",
-            "date": "N/A"
+            "date": "2022-01-01"
           },
           {
-            "id": "cert_2",
+            "id": "cert2",
             "name": "Certified Information Systems Security Professional",
             "institution": "ISC2",
-            "date": "N/A"
-          },
-          {
-            "id": "cert_3",
-            "name": "AWS Certified Solutions Architect Associate",
-            "institution": "AWS",
-            "date": "N/A"
-          },
-          {
-            "id": "cert_4",
-            "name": "Certified Cloud Security Professional",
-            "institution": "ISC2",
-            "date": "N/A"
+            "date": "2021-06-01"
           }
         ]
       }
     }
   }
+  
