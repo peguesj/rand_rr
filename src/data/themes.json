@@ -1,0 +1,30 @@
+{
+  "classic": {
+    "label": "Classic (Professional)",
+    "primary": "#2C3E50",
+    "secondary": "#34495E",
+    "accent": "#3498DB",
+    "textOnPrimary": "#FFFFFF"
+  },
+  "modern": {
+    "label": "Modern (Tech)",
+    "primary": "#6200EE",
+    "secondary": "#03DAC6",
+    "accent": "#BB86FC",
+    "textOnPrimary": "#FFFFFF"
+  },
+  "minimal": {
+    "label": "Minimal (Clean)", 
+    "primary": "#000000",
+    "secondary": "#333333",
+    "accent": "#666666",
+    "textOnPrimary": "#FFFFFF"
+  },
+  "elegant": {
+    "label": "Elegant (Executive)",
+    "primary": "#1B1B32",
+    "secondary": "#2A2A5E",
+    "accent": "#6F42C1",
+    "textOnPrimary": "#FFFFFF"
+  }
+}

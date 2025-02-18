@@ -1,0 +1,93 @@
+$themes: (
+  'classic': (
+    primary: #2C3E50,
+    secondary: #34495E,
+    accent: #3498DB,
+    surface: #FFFFFF,
+    surface-alt: #F8F9FA,
+    text-on-primary: #FFFFFF,
+    text-on-secondary: #FFFFFF,
+    text-on-accent: #FFFFFF,
+    text-on-surface: #2C3E50,
+    text-on-surface-alt: #34495E
+  ),
+  'modern': (
+    primary: #6200EE,
+    secondary: #03DAC6,
+    accent: #BB86FC,
+    surface: #FFFFFF,
+    surface-alt: #F3F3F3,
+    text-on-primary: #FFFFFF,
+    text-on-secondary: #000000,
+    text-on-accent: #000000,
+    text-on-surface: #121212,
+    text-on-surface-alt: #333333
+  ),
+  'minimal': (
+    primary: #000000,
+    secondary: #333333,
+    accent: #666666,
+    surface: #FFFFFF,
+    surface-alt: #F5F5F5,
+    text-on-primary: #FFFFFF,
+    text-on-secondary: #FFFFFF,
+    text-on-accent: #FFFFFF,
+    text-on-surface: #000000,
+    text-on-surface-alt: #333333
+  ),
+  'elegant': (
+    primary: #1B1B32,
+    secondary: #2A2A5E,
+    accent: #6F42C1,
+    surface: #FFFFFF,
+    surface-alt: #F8F9FA,
+    text-on-primary: #FFFFFF,
+    text-on-secondary: #FFFFFF,
+    text-on-accent: #FFFFFF,
+    text-on-surface: #1B1B32,
+    text-on-surface-alt: #2A2A5E
+  ),
+  'sea-voice': (
+    primary: #336699,
+    secondary: #5C98C0,
+    tertiary: #70B1D4,
+    accent-1: #84CAE7,
+    accent-2: #A1E1CF,
+    accent-3: #BDF7B7,
+    accent-4: #8EE3A7,
+    accent-5: #5FCF97,
+    accent-6: #30BB87,
+    accent-7: #00A676
+  ),
+  'flat-finance': (
+    primary: #dad7cd,
+    secondary: #a3b18a,
+    tertiary: #588157,
+    accent-1: #3a5a40,
+    accent-2: #344e41
+  ),
+  'gen-z-corp': (
+    primary: #39d05c,
+    secondary: #35e95f,
+    tertiary: #35d475,
+    accent-1: #35ac7a,
+    accent-2: #347f83,
+    accent-3: #2e518a,
+    accent-4: #40288f,
+    accent-5: #5702a1,
+    accent-6: #6500a3,
+    accent-7: #8127b9
+  ),
+  'earf': (
+    primary: #582f0e,
+    secondary: #7f4f24,
+    tertiary: #936639,
+    accent-1: #a68a64,
+    accent-2: #b6ad90,
+    accent-3: #c2c5aa,
+    accent-4: #a4ac86,
+    accent-5: #656d4a,
+    accent-6: #414833,
+    accent-7: #333d29
+  )
+);

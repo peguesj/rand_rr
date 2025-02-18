@@ -10,16 +10,19 @@ const Ajv = require('ajv');
 const addFormats = require('ajv-formats');
 
 // Initialize validator
-const ajv = new Ajv({ allErrors: true });
+const ajv = new Ajv({ 
+    allErrors: true,
+    strict: false // Allow keywords like 'version' in schema
+});
 addFormats(ajv);
 
 // Load schemas
-const resumeSchema = require('../../schemas/resume.json');
-const jobSchema = require('../../schemas/job.json');
+const resumeSchema = require('../../schemas/parsedResume_schema.json');
+const jobSchema = require('../../schemas/parsedJobPosting_schema.json');
 
 // Compile validators
 const validateResume = ajv.compile(resumeSchema);
-const validateJob = ajv.compile(jobSchema);
+const validateJobPosting = ajv.compile(jobSchema);
 
 const PAGE_FORMATS = {
     none: { label: 'Continuous', width: null, height: null },
@@ -50,10 +53,10 @@ function validateResumeData(data) {
  * @returns {Object} Validation result
  */
 function validateJobData(data) {
-    const valid = validateJob(data);
+    const valid = validateJobPosting(data);
     return {
         valid,
-        errors: validateJob.errors
+        errors: validateJobPosting.errors
     };
 }
 

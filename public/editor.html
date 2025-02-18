@@ -7,7 +7,8 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
     <link rel="stylesheet" href="../src/css/styles.css"/>
-    <style>
+    <link rel="stylesheet" href="/src/css/editor.css">
+<style>
         :root {
             --header-height: 4rem;
             --footer-height: 3.5rem;
@@ -40,7 +41,7 @@
         .editor-content,
         .preview-content {
             height: 100%;
-            overflow-y: auto;
+            overflow-y: hidden;
         }
 
         .footer {
@@ -66,7 +67,7 @@
             top: calc(var(--header-height) + 1rem);
             right: 1rem;
             width: 320px;
-            background: var(--background-panel);
+            /* background: var(--background-panel); */
             border-radius: 0.5rem;
             box-shadow: 0 4px 12px rgba(0,0,0,0.2);
             z-index: 1300;
@@ -86,7 +87,7 @@
         .column-header {
             position: sticky;
             top: 0;
-            background: var(--background-panel);
+            background: var(--color-dark-3);
             z-index: 1100;
             padding: 0.75rem 1rem;
         }
@@ -97,7 +98,13 @@
             position: relative;
         }
         .json-preview { height: 30vh; overflow-y: auto; }
-        .preview-pane { height: 100vh; overflow-y: auto; }
+        .preview-pane { max-width: var(--page-width); 
+            max-height: var(--page-height);
+            overflow-y:scroll; 
+        margin: 3vh auto;
+    border: thin solid var(--color-dark-3) ; 
+padding: var(--margin-top) var(--margin-right) var(--margin-bottom) var(--margin-left);
+        }
         .section-header {
             position: sticky;
             top: 0;
@@ -143,7 +150,7 @@
     </style>
 </head>
 <body>
-    <header class="app-header">
+    <header class="app-header border-bottom">
         <h1>Finnessume</h1>
         <button class="btn settings-button" id="settingsToggle">
             <i class="bi bi-gear"></i>
@@ -151,9 +158,117 @@
         </button>
     </header>
 
+    <!-- Add navigation bar -->
+    <div class="nav-bar">
+        <div class="page-navigation">
+            <div class="nav-arrow prev" title="Previous Page">←</div>
+            <div class="page-counter">
+                Page <span class="current-page">1</span> / <span class="total-pages">1</span>
+            </div>
+            <div class="nav-arrow next" title="Next Page">→</div>
+        </div>
+    </div>
+
     <!-- Settings Menu -->
     <div class="settings-menu" id="settingsMenu">
-        <!-- ...existing settings content... -->
+        <div class="settings-section">
+            <h6>Document Settings</h6>
+            <div class="mb-3">
+                <label class="form-label" for="settingsPageFormat">Page Format</label>
+                <select class="form-select" id="settingsPageFormat" name="pageFormat">
+                    <option value="letter">Letter (8.5" × 11")</option>
+                    <option value="a4">A4 (210mm × 297mm)</option>
+                    <option value="legal">Legal (8.5" × 14")</option>
+                </select>
+            </div>
+            
+            <div class="mb-3">
+                <label class="form-label d-block">Margins</label>
+                <div class="margin-controls">
+                    <div class="margin-group">
+                        <label for="marginTop" class="margin-group-label">Top:</label>
+                        <div class="margin-input-group">
+                            <input type="number" class="form-control form-control-sm margin-input" 
+                                   id="marginTop" name="marginTop" value="1" step="0.1" min="0">
+                            <span class="margin-unit">in</span>
+                        </div>
+                    </div>
+                    <div class="margin-group">
+                        <label for="marginBottom" class="margin-group-label">Bottom:</label>
+                        <div class="margin-input-group">
+                            <input type="number" class="form-control form-control-sm margin-input" 
+                                   id="marginBottom" name="marginBottom" value="1" step="0.1" min="0">
+                            <span class="margin-unit">in</span>
+                        </div>
+                    </div>
+                    <div class="margin-group">
+                        <label for="marginLeft" class="margin-group-label">Left:</label>
+                        <div class="margin-input-group">
+                            <input type="number" class="form-control form-control-sm margin-input" 
+                                   id="marginLeft" name="marginLeft" value="1" step="0.1" min="0">
+                            <span class="margin-unit">in</span>
+                        </div>
+                    </div>
+                    <div class="margin-group">
+                        <label for="marginRight" class="margin-group-label">Right:</label>
+                        <div class="margin-input-group">
+                            <input type="number" class="form-control form-control-sm margin-input" 
+                                   id="marginRight" name="marginRight" value="1" step="0.1" min="0">
+                            <span class="margin-unit">in</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label" for="settingsResumeFile">Resume Data</label>
+                <div class="input-group input-group-sm">
+                    <input type="file" class="form-control" id="settingsResumeFile" name="resumeFile" accept=".json">
+                    <button class="btn btn-outline-secondary" type="button" id="settingsLoadDefault">Default</button>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label" for="settingsSchemaFile">Schema</label>
+                <div class="form-check mb-2">
+                    <input class="form-check-input" type="checkbox" id="settingsUseCustomSchema" name="useCustomSchema">
+                    <label class="form-check-label" for="settingsUseCustomSchema">Use Custom Schema</label>
+                </div>
+                <div id="settingsSchemaUpload" style="display: none;">
+                    <input type="file" class="form-control form-control-sm" id="settingsSchemaFile" name="schemaFile" accept=".json">
+                </div>
+            </div>
+        </div>
+
+        <div class="settings-section">
+            <h6>Theme</h6>
+            <div class="theme-selector mb-3">
+                <select class="form-select" id="themeSelect">
+                    <option value="classic">Classic (Professional)</option>
+                    <option value="modern">Modern (Tech)</option>
+                    <option value="minimal">Minimal (Clean)</option>
+                    <option value="elegant">Elegant (Executive)</option>
+                </select>
+            </div>
+            
+            <div class="theme-preview mb-3 p-2 border rounded">
+                <small class="text-muted d-block mb-1">Theme Preview</small>
+                <div class="theme-sample" id="themePreview">
+                    Sample text in theme colors
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="showMargins">
+                    <label class="form-check-label">Show Document Margins</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="constrainPage">
+                    <label class="form-check-label">Constrain to Page Size</label>
+                </div>
+            </div>
+        </div>
     </div>
     
     <main class="main-content">
@@ -209,7 +324,7 @@
                 <div class="col-6 p-0">
                     <h2 class="column-header">Resume Preview</h2>
                     <div class="preview-content">
-                        <div class="preview-pane p-4" id="previewPane">
+                        <div class="preview-pane" id="previewPane">
                             <!-- Resume preview rendered here -->
                         </div>
                     </div>
@@ -218,7 +333,7 @@
         </div>
     </main>
 
-    <footer class="footer">
+    <footer class="footer border-top">
         <div class="container-fluid">
             <div class="row align-items-center">
                 <div class="col-3">
@@ -253,5 +368,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <script src="../src/js/render.js"></script>
     <script src="../src/js/editor.js"></script>
+    <script src="../src/js/theme-manager.js"></script>
 </body>
 </html>

@@ -1,0 +1,13 @@
+:root {
+  --border-color: rgba(0,0,0,0.1);
+  --text-primary: #212529;
+  --background-panel: #ffffff;
+  --menu-shadow: rgba(0,0,0,0.2);
+}
+
+[data-theme="dark"] {
+  --border-color: rgba(255,255,255,0.1);
+  --text-primary: #ffffff;
+  --background-panel: #343a40;
+  --menu-shadow: rgba(0,0,0,0.4);
+}

@@ -1,0 +1,362 @@
+@use 'variables' as *;
+@use 'extended-colors' as *;
+@use 'contrasts' as *;
+
+:root {
+  --header-height: 4rem;
+  --footer-height: 3.5rem;
+  --content-height: calc(100vh - var(--header-height) - var(--footer-height));
+  --background-footer: var(--surface-alt);
+  --background-panel: var(--surface);
+  --font-heading: 'Inter', sans-serif;
+  
+  // Theme colors (defaults from flat-finance theme)
+  --primary: #588157;
+  --secondary: #3a5a40;
+  --tertiary: #344e41;
+  --accent: #a3b18a;
+  --surface: #ffffff;
+  --surface-alt: #f8f9fa;
+  --text-primary: #344e41;
+  --text-secondary: #588157;
+  --border-color: #a3b18a;
+  --color-dark-2: #343a40;
+  --color-dark-3: #495057;
+  --color-white: #ffffff;
+  --page-width: calc(8.5 * 96px); // 8.5 inches at 96dpi
+  --page-height: calc(11 * 96px); // 11 inches at 96dpi
+  --preview-padding: 2rem;
+  --preview-background: #838383;
+}
+
+body {
+  overflow: hidden;
+}
+
+.app-header {
+  height: var(--header-height);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1200;
+  background: linear-gradient(to right, var(--primary), var(--secondary));
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 2rem;
+
+  h1 {
+    margin: 0;
+    font-size: 2rem;
+    font-weight: 300;
+  }
+}
+
+// Remove old navigation bar styles
+.nav-bar {
+  display: none;
+}
+
+.main-content {
+  margin-top: var(--header-height);
+  height: var(--content-height);
+  overflow: hidden;
+}
+
+.editor-content,
+.preview-content {
+  height: 100%;
+  overflow-y: auto;
+  position: relative; // Add relative positioning
+  
+  .page-navigation {
+    margin: 0 auto 1em 0;
+    text-align: center;
+    background: var(--accent);
+    border-bottom: thin dotted var(--primary);
+    padding: .5em;
+    display: flow;
+
+        div {
+            display: inline-block;
+            margin: 0 1em;
+        }
+  }
+}
+
+.preview-content {
+  height: 100%;
+  overflow-y: auto;
+  position: relative;
+  
+  .resume-content {
+    width: var(--page-width);
+    min-height: var(--page-height);
+    margin: var(--preview-padding) auto;
+    padding: var(--margin-top, 1in) var(--margin-right, 1in) var(--margin-bottom, 1in) var(--margin-left, 1in);
+    background: white;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    position: relative;
+
+    &:before,
+    &:after {
+      content: "←";
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 40px;
+      height: 40px;
+      background: var(--color-dark-3);
+      color: var(--color-white);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      opacity: 0.6;
+      transition: all 0.2s ease;
+      font-size: 1.25rem;
+    }
+
+    &:before {
+      content: "←";
+      left: -60px;
+    }
+
+    &:after {
+      content: "→";
+      right: -60px;
+    }
+
+    &:hover {
+      &:before,
+      &:after {
+        opacity: 1;
+        background: var(--color-dark-2);
+      }
+    }
+  }
+}
+
+.footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: var(--footer-height);
+  background: var(--background-footer);
+  z-index: 1200;
+  padding: 0.75rem 1rem;
+
+  &-branding {
+    text-align: center;
+    font-family: var(--font-heading);
+    font-size: 0.75rem;
+    line-height: 1.2;
+  }
+}
+
+.settings {
+  &-menu {
+    position: fixed;
+    top: calc(var(--header-height) + 0.5rem);
+    right: 2rem;
+    width: 320px;
+    background: var(--surface);
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    z-index: 1300;
+    display: none;
+    padding: 1rem;
+    border: 1px solid var(--border-color);
+
+    &.show {
+      display: block;
+      animation: fadeIn 0.2s ease;
+    }
+
+    .settings-section {
+      padding: 1rem;
+      border-bottom: 1px solid var(--border-color);
+
+      &:last-child {
+        border-bottom: none;
+      }
+
+      h6 {
+        margin-bottom: 1rem;
+        color: var(--text-primary);
+      }
+    }
+
+    // Add better spacing for margin controls
+    .margin-controls {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-top: 0.5rem;
+    }
+  }
+
+  &-button {
+    color: var(--color-white);
+    background: transparent;
+    border: 1px solid var(--accent);
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.2s ease;
+
+    &:hover,
+    &.active {
+      background: var(--tertiary);
+      border-color: var(--accent);
+      color: var(--color-white);
+    }
+  }
+}
+
+@keyframes fadeIn {
+  from { 
+    opacity: 0; 
+    transform: translateY(-10px); 
+  }
+  to { 
+    opacity: 1; 
+    transform: translateY(0); 
+  }
+}
+
+.column-header {
+  position: sticky;
+  top: 0;
+  background: var(--secondary);
+  color: var(--surface);
+  padding: 0.75rem 1rem;
+}
+
+.editor-pane {
+  height: 70vh;
+  overflow-y: auto;
+  position: relative;
+}
+
+.json-preview {
+  height: 30vh;
+  overflow-y: auto;
+}
+
+.preview-pane {
+  background: var(--preview-background);
+  padding: 0;
+  overflow-y: auto;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  position: relative;
+
+  // Default values that will be overridden by JavaScript
+  --page-width: 8.5in;
+  --page-height: 11in;
+  --margin-top: 1in;
+  --margin-right: 1in;
+  --margin-bottom: 1in;
+  --margin-left: 1in;
+
+  &.doc-content {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    
+    .resume-content {
+      background: white;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+      width: var(--page-width);
+      min-height: var(--page-height);
+      margin: 0 auto;
+      padding: var(--margin-top, 1in) var(--margin-right, 1in) var(--margin-bottom, 1in) var(--margin-left, 1in);
+      position: relative;
+    }
+  }
+}
+
+.settings-menu {
+  position: fixed;
+  top: calc(var(--header-height) + 0.5rem);
+  right: 2rem;
+  width: 320px;
+  background: var(--surface);
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  z-index: 1300;
+  display: none;
+  padding: 1rem;
+  color: #212529;
+  border: 1px solid var(--border-color);
+
+  &.show {
+    display: block;
+    animation: fadeIn 0.2s ease;
+  }
+
+  .settings-section {
+    padding: 1rem;
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+
+    &:last-child {
+      border-bottom: none;
+    }
+
+    h6 {
+      margin-bottom: 1rem;
+      color: #212529;
+      font-weight: 600;
+    }
+  }
+
+  .form-label {
+    color: #495057;
+  }
+
+  .form-control,
+  .form-select {
+    border-color: rgba(0,0,0,0.2);
+  }
+
+  .margin-controls {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-top: 0.5rem;
+    background: rgba(255,255,255,0.5);
+    padding: 0.75rem;
+    border-radius: 0.375rem;
+    border: 1px solid rgba(0,0,0,0.1);
+  }
+
+  .margin-group-label {
+    color: #495057;
+    font-size: 0.875rem;
+  }
+}
+
+.section-header {
+  position: sticky;
+  top: 0;
+  background: white;
+  padding: 1rem;
+  margin: -1rem -1rem 1rem -1rem;
+  border-bottom: 1px solid #dee2e6;
+  z-index: 1000;
+}
+
+.nav-arrow {
+  background: var(--tertiary);
+  color: var(--surface);
+  &:hover {
+    background: var(--primary);
+  }
+}

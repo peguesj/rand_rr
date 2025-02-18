@@ -1,0 +1,22 @@
+@use "sass:color";
+@use "extended-colors" as *;
+
+// Function to check contrast and provide accessible text color
+@function get-contrast-color($background) {
+  $luminance: color.red($background) * 0.2126 + 
+              color.green($background) * 0.7152 + 
+              color.blue($background) * 0.0722;
+              
+  @return if($luminance > 128, $dark-text, $light-text);
+}
+
+// Enhance theme colors with contrast corrections
+@each $theme, $colors in $themes {
+  .theme-#{$theme} {
+    --text-on-primary: #{get-contrast-color(map-get($colors, "primary"))};
+    --text-on-secondary: #{get-contrast-color(map-get($colors, "secondary"))};
+    --text-on-accent: #{get-contrast-color(map-get($colors, "accent"))};
+    --text-on-surface: #{get-contrast-color(map-get($colors, "surface"))};
+    --text-on-surface-alt: #{get-contrast-color(map-get($colors, "surface-alt"))};
+  }
+}

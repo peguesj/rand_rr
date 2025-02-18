@@ -1,0 +1,28 @@
+{
+  "title": "Senior Software Engineer",
+  "company": "TechCorp Solutions",
+  "location": "San Francisco, CA",
+  "requirements": [
+    "7+ years of software development experience",
+    "Strong expertise in JavaScript/TypeScript",
+    "Experience with React and Node.js",
+    "Bachelor's degree in Computer Science or related field"
+  ],
+  "responsibilities": [
+    "Lead development of core platform features",
+    "Mentor junior developers",
+    "Design and implement scalable solutions",
+    "Collaborate with product and design teams"
+  ],
+  "skills": [
+    "JavaScript",
+    "TypeScript",
+    "React",
+    "Node.js",
+    "AWS",
+    "System Design",
+    "CI/CD"
+  ],
+  "experience": "7+ years",
+  "education": "Bachelor's degree in Computer Science or related field"
+}
