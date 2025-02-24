@@ -1,0 +1,18 @@
+<div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+  <.header>
+    <title>Jobs</title>
+    <:actions>
+      <.link navigate={~p"/jobs/new"} class="btn btn-primary">New Job</.link>
+    </:actions>
+  </.header>
+
+  <.table id="jobs" rows={@jobs} row_click={fn job -> "/jobs/#{job.id}" end}>
+    <:col :let={job} label="Title">{job.title}</:col>
+    <:col :let={job} label="Company">{job.company}</:col>
+    <:col :let={job} label="Location">{job.location}</:col>
+    <:col :let={job} label="Status">{job.status}</:col>
+    <:actions :let={job}>
+      <.link navigate={~p"/jobs/#{job.id}/edit"} class="btn btn-secondary">Edit</.link>
+    </:actions>
+  </.table>
+</div>

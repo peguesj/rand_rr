@@ -1,0 +1,23 @@
+<div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+  <.header>
+    {@job.title}
+    <:subtitle>At {@job.company}</:subtitle>
+    <:actions>
+      <.link navigate={~p"/jobs/#{@job.id}/edit"} class="btn btn-secondary">Edit</.link>
+    </:actions>
+  </.header>
+
+  <.list>
+    <:item title="Title">{@job.title}</:item>
+    <:item title="Company">{@job.company}</:item>
+    <:item title="Location">{@job.location}</:item>
+    <:item title="Description">{@job.description}</:item>
+    <:item title="Requirements">
+      <ul class="list-disc ml-6">
+        <%= for requirement <- @job.requirements || [] do %>
+          <li class="text-sm">{requirement}</li>
+        <% end %>
+      </ul>
+    </:item>
+  </.list>
+</div>
