@@ -1,0 +1,37 @@
+<% import FinessumeWeb.CoreComponents %>
+
+<div class="min-h-screen bg-gray-100">
+  <header class="bg-white shadow">
+    <nav class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="flex h-16 items-center justify-between">
+        <div class="flex items-center">
+          <div class="hidden md:block">
+            <div class="flex items-baseline space-x-4">
+              <%= for {name, href, text} <- FinessumeWeb.Layouts.navigation_items() do %>
+                <.link
+                  navigate={href}
+                  class={[
+                    "inline-flex items-center border-b-2 px-1 pt-1 text-sm font-medium",
+                    @current_page == name && "border-indigo-500 text-gray-900",
+                    @current_page != name && "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700"
+                  ]}
+                >
+                  <%= text %>
+                </.link>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <div class="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
+      <.flash_group flash={@flash} />
+      <%= @inner_content %>
+    </div>
+  </main>
+
+  <.footer />
+</div>
