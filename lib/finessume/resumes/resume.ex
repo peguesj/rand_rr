@@ -10,64 +10,37 @@ defmodule Finessume.Resumes.Resume do
     field(:date_parsed, :utc_datetime)
     field(:parse_time, :string)
     field(:data, :map)
-    field(:status, :string, default: "draft")
     field(:schema_version, :string, default: "3.1.3")
 
     belongs_to(:user, Finessume.Accounts.User)
-    # Update association to use the existing column "template_version_id"
-    belongs_to(:template, Finessume.Templates.Template, foreign_key: :template_version_id)
+    belongs_to(:template_version, Finessume.Templates.TemplateVersion)
 
     timestamps()
   end
 
-  @doc false
+  @required_fields [:parsed_resume_id, :source, :date_parsed, :parse_time, :data]
+  @optional_fields [:schema_version, :user_id, :template_version_id]
+
   def changeset(resume, attrs) do
     resume
-    |> cast(attrs, [
-      :parsed_resume_id,
-      :source,
-      :date_parsed,
-      :parse_time,
-      :data,
-      :status,
-      :schema_version,
-      :user_id,
-      # Updated field name
-      :template_version_id
-    ])
-    |> validate_required([
-      :parsed_resume_id,
-      :source,
-      :date_parsed,
-      :parse_time,
-      :data,
-      :user_id
-    ])
-    |> validate_inclusion(:status, ~w(draft published archived))
-    |> validate_resume_data()
+    |> cast(attrs, @required_fields ++ @optional_fields)
+    |> validate_required(@required_fields)
+    |> validate_data_structure()
   end
 
-  defp validate_resume_data(changeset) do
+  defp validate_data_structure(changeset) do
     validate_change(changeset, :data, fn :data, data ->
-      case validate_resume_structure(data) do
-        :ok -> []
-        {:error, errors} -> [data: errors]
+      with true <- has_required_sections?(data),
+           true <- valid_personal_info?(data["personalInfo"]),
+           true <- valid_work_experience?(data["workExperience"]),
+           true <- valid_education?(data["education"]),
+           # Add skills validation
+           true <- valid_skills?(data["skills"]) do
+        []
+      else
+        _ -> [data: "Invalid data structure"]
       end
     end)
-  end
-
-  defp validate_resume_structure(data) do
-    with true <- is_map(data),
-         true <- has_required_sections?(data),
-         true <- valid_personal_info?(data["personalInfo"]),
-         true <- valid_work_experience?(data["workExperience"]),
-         true <- valid_education?(data["education"]),
-         true <- valid_skills?(data["skills"]) do
-      :ok
-    else
-      false -> {:error, "Invalid resume structure"}
-      {:error, reason} -> {:error, reason}
-    end
   end
 
   defp has_required_sections?(data) do
@@ -123,4 +96,47 @@ defmodule Finessume.Resumes.Resume do
   end
 
   defp valid_skills?(_), do: false
-end
+
+  @doc """
+  Validates a resume map against required structure.
+  Returns {:ok, resume} if valid, {:error, reason} if not.
+  """
+    def validate(resume) when is_map(resume) do
+      with {:ok, _} <- validate_data_presence(resume),
+           {:ok, _} <- validate_personal_info(resume),
+           {:ok, _} <- validate_work_experience(resume),
+           {:ok, _} <- validate_skills(resume) do
+        {:ok, resume}
+      end
+    end
+
+    defp validate_data_presence(%{"data" => data}) when is_map(data), do: {:ok, data}
+    defp validate_data_presence(_), do: {:error, "Missing or invalid data structure"}
+
+    defp validate_personal_info(%{"data" => %{"personalInfo" => info}}) when is_map(info) do
+      if Map.has_key?(info, "name") and is_binary(info["name"]) and info["name"] != "" do
+        {:ok, info}
+      else
+        {:error, "Missing or invalid personal info"}
+      end
+    end
+    defp validate_personal_info(_), do: {:error, "Missing or invalid personal info"}
+
+    defp validate_work_experience(%{"data" => %{"workExperience" => exp}}) when is_map(exp) do
+      if Map.has_key?(exp, "items") and is_list(exp["items"]) do
+        {:ok, exp}
+      else
+        {:error, "Missing or invalid work experience"}
+      end
+    end
+    defp validate_work_experience(_), do: {:error, "Missing or invalid work experience"}
+
+    defp validate_skills(%{"data" => %{"skills" => skills}}) when is_map(skills) do
+      if Map.has_key?(skills, "items") and is_list(skills["items"]) do
+        {:ok, skills}
+      else
+        {:error, "Missing or invalid skills"}
+      end
+    end
+    defp validate_skills(_), do: {:error, "Missing or invalid skills"}
+  end

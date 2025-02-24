@@ -197,14 +197,127 @@ defmodule Finessume.Seeds do
     }
   end
 
+  defp encode_json_fields(map) when is_map(map) do
+    Map.new(map, fn {key, value} -> {key, encode_json_fields(value)} end)
+  end
+
+  defp encode_json_fields(list) when is_list(list) do
+    Enum.map(list, &encode_json_fields/1)
+  end
+
+  defp encode_json_fields(other), do: other
+
   defp generate_fake_job do
+    job = %{
+      "job_posting_id" => Faker.UUID.v4(),
+      "metadata" => %{
+        "source" => Enum.random(["LinkedIn", "Indeed", "Company Website"]),
+        "postDate" => DateTime.utc_now() |> DateTime.to_iso8601(),
+        "status" => Enum.random(["active", "filled", "expired", "draft"]),
+        "featured" => Faker.random_uniform() > 0.7,
+        "internal" => Faker.random_uniform() > 0.8
+      },
+      "position" => %{
+        "title" => Enum.random(@job_titles),
+        "type" => Enum.random(["full-time", "part-time", "contract", "temporary", "internship"]),
+        "level" =>
+          Enum.random([
+            "entry",
+            "associate",
+            "mid-senior",
+            "senior",
+            "lead",
+            "principal",
+            "executive"
+          ]),
+        "function" =>
+          Enum.random(["Engineering", "Data Science", "Product", "DevOps", "Security"]),
+        "classification" => %{
+          "industry" => "Technology",
+          "category" => "Software Development",
+          "subcategory" =>
+            Enum.random(["Backend", "Frontend", "Full Stack", "DevOps", "Security"])
+        }
+      },
+      "organization" => %{
+        "name" => Faker.Company.name(),
+        "department" => Faker.Company.buzzword(),
+        "location" => %{
+          "type" => Enum.random(["on-site", "hybrid", "remote"]),
+          "primary" => %{
+            "city" => Faker.Address.city(),
+            "state" => Faker.Address.state_abbr(),
+            "country" => "USA",
+            "postalCode" => Faker.Address.zip_code()
+          }
+        }
+      },
+      "requirements" => generate_job_requirements(),
+      "description" => generate_job_description(),
+      "application" => generate_job_application()
+    }
+
+    # Encode all map values for JSONB compatibility
+    encode_json_fields(job)
+  end
+
+  defp generate_job_requirements do
     %{
-      "title" => Enum.random(@job_titles),
-      "company" => Faker.Company.name(),
-      "description" => Faker.Company.catch_phrase(),
-      "requirements" => Enum.take_random(@tech_skills, 5),
-      "location" => "#{Faker.Address.city()}, #{Faker.Address.state_abbr()}",
-      "status" => "active"
+      "education" => [
+        %{
+          "level" => "Bachelor's",
+          "field" => "Computer Science",
+          "required" => true
+        }
+      ],
+      "experience" => %{
+        "minimum" => Enum.random(1..5),
+        "preferred" => Enum.random(5..8),
+        "areas" => generate_required_skills(3)
+      },
+      "skills" => generate_required_skills(5)
+    }
+  end
+
+  defp generate_required_skills(count) do
+    Enum.map(Enum.take_random(@tech_skills, count), fn skill ->
+      %{
+        "name" => skill,
+        "category" => Enum.random(["technical", "soft"]),
+        "level" => Enum.random(["beginner", "intermediate", "expert"]),
+        "required" => Faker.random_uniform() > 0.3
+      }
+    end)
+  end
+
+  defp generate_job_description do
+    %{
+      "overview" => Faker.Company.catch_phrase(),
+      "responsibilities" => Enum.map(1..4, fn _ -> Faker.Company.bs() end),
+      "qualifications" => %{
+        "required" => Enum.map(1..3, fn _ -> "#{Enum.random(@tech_skills)} expertise" end),
+        "preferred" => Enum.map(1..2, fn _ -> "#{Enum.random(@tech_skills)} knowledge" end)
+      },
+      "additionalNotes" => [Faker.Company.catch_phrase()]
+    }
+  end
+
+  defp generate_job_application do
+    %{
+      "process" => Enum.random(["direct", "referral", "agency"]),
+      "url" => "https://careers.example.com/apply",
+      "instructions" => "Please submit your resume and cover letter",
+      "documents" => [
+        %{
+          "type" => "resume",
+          "required" => true
+        },
+        %{
+          "type" => "cover_letter",
+          "required" => false
+        }
+      ],
+      "deadline" => Date.utc_today() |> Date.add(30) |> Date.to_iso8601()
     }
   end
 end
