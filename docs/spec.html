@@ -1,0 +1,1552 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Finessume - Comprehensive Documentation</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/toolbar/prism-toolbar.min.css"
+      rel="stylesheet"
+    />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/toolbar/prism-toolbar.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-markup.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-plantuml.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-mermaid.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/plantuml-encoder/dist/plantuml-encoder.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.36.1/min/vs/loader.min.js"></script>
+    <style>
+      :root {
+        --footer-height: 80px;
+      }
+
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        min-height: 100vh;
+        overflow: hidden;
+      }
+
+      .main-wrapper {
+        display: flex;
+        height: calc(100vh - var(--footer-height));
+        overflow: hidden;
+      }
+
+      .sidebar {
+        width: 250px;
+        height: 100%;
+        background: #343a40;
+        padding-top: 20px;
+        overflow-y: auto;
+      }
+
+      .content {
+        margin-left: 0;
+        padding: 20px;
+        flex: 1;
+        overflow-y: auto;
+        height: 100%;
+      }
+
+      .footer {
+        height: var(--footer-height);
+        background: #f8f9fa;
+        padding: 10px 20px;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        z-index: 1000;
+      }
+
+      .sidebar a {
+        padding: 10px 15px;
+        text-decoration: none;
+        font-size: 18px;
+        color: white;
+        display: block;
+      }
+      .sidebar a:hover,
+      .sidebar a.active {
+        background: #495057;
+      }
+      .nav-pills .nav-link {
+        cursor: pointer;
+      }
+      pre code {
+        padding: 10px;
+        display: block;
+      }
+      .diagram-container {
+        max-width: 60%;
+        margin: 0 auto;
+        text-align: center;
+      }
+      .diagram-caption {
+        font-size: 14px;
+        color: #666;
+        margin-top: 5px;
+      }
+      .card-header-with-tabs {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .card-header-with-tabs .nav-pills {
+        margin: 0;
+        padding: 0;
+      }
+      .card-header-with-tabs .nav-pills .nav-link {
+        padding: 0.25rem 0.75rem;
+        font-size: 0.875rem;
+        margin-left: 0.5rem;
+      }
+      pre[class*="language-"] {
+        margin: 1em 0;
+        border-radius: 4px;
+      }
+      .diagram-preview {
+        margin-top: 1rem;
+        padding: 1rem;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+      }
+      .doc-section {
+        margin-bottom: 3rem;
+      }
+
+      .doc-subsection {
+        margin: 2rem 0;
+      }
+
+      .code-example {
+        position: relative;
+        border: 1px solid var(--bs-border-color);
+        border-radius: 6px;
+        margin: 1rem 0;
+      }
+
+      .code-example-header {
+        padding: 0.5rem 1rem;
+        background: #f8f9fa;
+        border-bottom: 1px solid var(--bs-border-color);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .code-example-content {
+        padding: 1rem;
+        max-height: 400px;
+        overflow: auto;
+      }
+
+      .implementation-step {
+        padding: 1rem;
+        margin: 1rem 0;
+        background: #f8f9fa;
+        border-left: 4px solid #0d6efd;
+        border-radius: 4px;
+      }
+
+      .implementation-note {
+        padding: 0.5rem 1rem;
+        margin: 1rem 0;
+        background: #fff3cd;
+        border-left: 4px solid #ffc107;
+        border-radius: 4px;
+      }
+
+      /* New diagram styles */
+      .diagram-wrapper {
+        border: 1px solid var(--bs-border-color);
+        border-radius: 6px;
+        margin: 1rem 0;
+      }
+
+      .diagram-header {
+        padding: 0.75rem;
+        border-bottom: 1px solid var(--bs-border-color);
+        background: #f8f9fa;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .diagram-source-selector {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+      }
+
+      .diagram-content {
+        display: flex;
+        height: 500px;
+      }
+
+      .diagram-code {
+        width: 50%;
+        border-right: 1px solid var(--bs-border-color);
+        overflow: auto;
+      }
+
+      .diagram-preview {
+        width: 50%;
+        padding: 1rem;
+        overflow: auto;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .source-type {
+        font-size: 0.875rem;
+        color: #666;
+      }
+
+      .language-label {
+        position: absolute;
+        top: 0.5rem;
+        right: 0.5rem;
+        padding: 0.25rem 0.5rem;
+        background: rgba(0, 0, 0, 0.6);
+        color: white;
+        border-radius: 3px;
+        font-size: 0.75rem;
+      }
+
+      .code-container {
+        position: relative;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="main-wrapper">
+      <nav class="sidebar">
+        <h2 class="text-center text-white">Finessume</h2>
+        <a href="#overview">Overview</a>
+        <a href="#npm-package">NPM Package</a>
+        <div class="ms-3">
+          <a href="#npm-installation">Installation</a>
+          <a href="#npm-usage">Usage</a>
+          <a href="#npm-api">API Reference</a>
+          <a href="#npm-examples">Examples</a>
+        </div>
+        <a href="#phoenix">Phoenix Implementation</a>
+        <div class="ms-3">
+          <a href="#phoenix-setup">Setup</a>
+          <a href="#phoenix-components">Components</a>
+          <a href="#phoenix-integration">Integration</a>
+          <a href="#phoenix-deployment">Deployment</a>
+        </div>
+        <a href="#version-control">Version Control</a>
+        <a href="#requirements">Application Requirements</a>
+        <a href="#usage">Usage</a>
+        <a href="#dev-environment">Development Environment</a>
+        <a href="#object-reference">Object Reference</a>
+      </nav>
+      <div class="content container-fluid">
+        <section id="overview" class="doc-section">
+          <h2>Overview</h2>
+          <p class="lead">
+            A professional resume generation and management system with dynamic
+            templating and schema validation.
+          </p>
+
+          <div class="card mb-4">
+            <div class="card-header">
+              <h3>Key Features</h3>
+            </div>
+            <div class="card-body">
+              <ul>
+                <li>Dynamic resume templating</li>
+                <li>Schema validation</li>
+                <li>AI-powered content enhancement</li>
+                <li>Real-time preview</li>
+                <li>PDF generation</li>
+                <li>Job posting analysis</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <section id="version-control">
+          <h2>Version Control</h2>
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>Component</th>
+                <th>Version</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Finessume Documentation</td>
+                <td>1.0.0</td>
+              </tr>
+              <tr>
+                <td>Parsed Resume Schema</td>
+                <td>3.1.3</td>
+              </tr>
+              <tr>
+                <td>Parsed Job Description Schema</td>
+                <td>3.1.3</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section id="npm-package" class="doc-section">
+          <h2>NPM Package Documentation</h2>
+
+          <div class="card mb-4">
+            <div class="card-header">
+              <h3>Installation</h3>
+            </div>
+            <div class="card-body">
+              <pre><code class="language-bash">npm install @pyj/finnesse</code></pre>
+            </div>
+          </div>
+
+          <div class="card mb-4">
+            <div class="card-header card-header-with-tabs">
+              <h3 class="mb-0">Architecture Diagrams</h3>
+              <ul class="nav nav-pills" id="diagram-type-tab" role="tablist">
+                <li class="nav-item">
+                  <a
+                    class="nav-link active"
+                    id="mermaid-tab"
+                    data-bs-toggle="pill"
+                    href="#mermaid"
+                    role="tab"
+                    >Mermaid</a
+                  >
+                </li>
+                <li class="nav-item">
+                  <a
+                    class="nav-link"
+                    id="plantuml-tab"
+                    data-bs-toggle="pill"
+                    href="#plantuml"
+                    role="tab"
+                    >PlantUML</a
+                  >
+                </li>
+              </ul>
+            </div>
+            <div class="card-body">
+              <div class="tab-content" id="diagram-type-content">
+                <div
+                  class="tab-pane fade show active"
+                  id="mermaid"
+                  role="tabpanel"
+                >
+                  <div class="diagram-wrapper">
+                    <div class="diagram-header">
+                      <div class="diagram-source-selector">
+                        <label>Source:</label>
+                        <select
+                          class="form-select form-select-sm"
+                          onchange="updateDiagramSource(this, 'mermaid')"
+                        >
+                          <option value="code">Code</option>
+                          <option value="encoded">Encoded</option>
+                          <option value="share">Share Link</option>
+                          <option value="svg">SVG Code</option>
+                        </select>
+                      </div>
+                      <button class="btn btn-sm btn-outline-primary copy-btn">
+                        Copy
+                      </button>
+                    </div>
+                    <div class="diagram-content">
+                      <div class="diagram-code">
+                        <div class="code-container">
+                          <span class="language-label">Mermaid</span>
+                          <pre class="language-mermaid"><code>
+graph TB
+    subgraph Frontend
+        editor[Editor UI]
+        preview[Preview Panel]
+        validator[Schema Validator]
+        pdf[PDF Generator]
+    end
+                                    </code></pre>
+                        </div>
+                      </div>
+                      <div class="diagram-preview"></div>
+                    </div>
+                  </div>
+                </div>
+                <div class="tab-pane fade" id="plantuml" role="tabpanel">
+                  <div class="diagram-wrapper">
+                    <div class="diagram-header">
+                      <div class="diagram-source-selector">
+                        <label>Source:</label>
+                        <select
+                          class="form-select form-select-sm"
+                          onchange="updateDiagramSource(this, 'plantuml')"
+                        >
+                          <option value="code">Code</option>
+                          <option value="encoded">Encoded</option>
+                          <option value="share">Share Link</option>
+                          <option value="svg">SVG Code</option>
+                        </select>
+                      </div>
+                      <button class="btn btn-sm btn-outline-primary copy-btn">
+                        Copy
+                      </button>
+                    </div>
+                    <div class="diagram-content">
+                      <div class="diagram-code">
+                        <div class="code-container">
+                          <span class="language-label">PlantUML</span>
+                          <pre class="language-plantuml"><code>
+@startuml Architecture
+skinparam componentStyle uml2
+skinparam backgroundColor #FFFFFF
+
+package "Frontend" {
+    [Editor UI] as editor
+    [Preview Panel] as preview
+    [Schema Validator] as validator
+    [PDF Generator] as pdf
+}
+@enduml
+                                    </code></pre>
+                        </div>
+                      </div>
+                      <div class="diagram-preview"></div>
+                    </div>
+                  </div>
+                </div>
+                <div class="tab-pane fade" id="svg" role="tabpanel">
+                  <div class="diagram-container">
+                    <!-- SVG content will be dynamically inserted -->
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="doc-subsection">
+            <h3>API Integration</h3>
+            <div class="code-example">
+              <div class="code-example-header">
+                <span>Resume Processing Example</span>
+                <button class="btn btn-sm btn-outline-primary copy-btn">
+                  Copy
+                </button>
+              </div>
+              <div class="code-example-content">
+                <pre><code class="language-javascript">
+import { ResumeProcessor } from '@pyj/finnesse';
+
+const processor = new ResumeProcessor({
+    openAIKey: process.env.OPENAI_API_KEY
+});
+
+// Process resume against job posting
+const result = await processor.enhance({
+    resume: './resume.json',
+    jobPosting: './job.json'
+});
+                            </code></pre>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="phoenix" class="doc-section">
+          <h2>Phoenix Implementation Guide</h2>
+
+          <div class="card mb-4">
+            <div class="card-header card-header-with-tabs">
+              <h3 class="mb-0">LiveView Architecture</h3>
+              <ul class="nav nav-pills" id="phoenix-live-tab" role="tablist">
+                <li class="nav-item">
+                  <a
+                    class="nav-link active"
+                    data-bs-toggle="pill"
+                    href="#live-mermaid"
+                    >Flow</a
+                  >
+                </li>
+                <li class="nav-item">
+                  <a
+                    class="nav-link"
+                    data-bs-toggle="pill"
+                    href="#live-components"
+                    >Components</a
+                  >
+                </li>
+              </ul>
+            </div>
+            <div class="card-body">
+              <div class="tab-content">
+                <div class="tab-pane fade show active" id="live-mermaid">
+                  <pre class="language-mermaid"><code>
+sequenceDiagram
+    participant B as Browser
+    participant LV as LiveView
+    participant C as Context
+    participant DB as Database
+    
+    B->>LV: Initial Request
+    LV->>C: mount/3
+    C->>DB: Query Data
+    DB-->>C: Return Data
+    C-->>LV: Update Socket
+    LV-->>B: Render Initial HTML
+    
+    Note over B,LV: WebSocket Connection
+    
+    B->>LV: Event (phx-change/click)
+    LV->>C: handle_event/3
+    C->>DB: Update Data
+    DB-->>C: Confirm
+    C-->>LV: Update Socket
+    LV-->>B: Push Updates
+                                </code></pre>
+                </div>
+                <div class="tab-pane fade" id="live-components">
+                  <pre class="language-mermaid"><code>
+graph TB
+    subgraph "Layout Components"
+        L[App Layout]
+        N[Navigation]
+        F[Footer]
+    end
+    
+    subgraph "Resume Components"
+        RC[ResumeLive]
+        RE[ResumeEditor]
+        RP[ResumePreview]
+        RT[ResumeTemplate]
+    end
+    
+    subgraph "Form Components"
+        FF[Form Fields]
+        FV[Form Validation]
+        AI[AI Enhancement]
+    end
+    
+    subgraph "Preview Components"
+        PD[PDF Preview]
+        EP[Export Panel]
+        SP[Share Panel]
+    end
+    
+    L --> N
+    L --> F
+    RC --> RE
+    RC --> RP
+    RE --> FF
+    RE --> FV
+    RP --> RT
+    RP --> PD
+    PD --> EP
+    PD --> SP
+    FF --> AI
+                                </code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card mb-4">
+            <div class="card-header">
+              <h3>Core Components Implementation</h3>
+            </div>
+            <div class="card-body">
+              <div class="code-example">
+                <div class="code-example-header">
+                  <span>Resume Live View</span>
+                </div>
+                <div class="code-example-content">
+                  <pre><code class="language-elixir">
+defmodule FinessumeWeb.ResumeLive do
+  use FinessumeWeb, :live_view
+  
+  alias Finessume.Resumes
+  alias Finessume.Templates
+  alias FinessumeWeb.Components.{
+    ResumeEditor,
+    ResumePreview,
+    ExportPanel
+  }
+
+  @impl true
+  def mount(_params, _session, socket) do
+    if connected?(socket) do
+      Resumes.subscribe()
+    end
+
+    {:ok,
+     socket
+     |> assign(:resume, nil)
+     |> assign(:templates, Templates.list_templates())
+     |> assign(:page_title, "Resume Editor")}
+  end
+
+  @impl true 
+  def handle_event("save", %{"resume" => resume_params}, socket) do
+    case Resumes.create_or_update_resume(resume_params) do
+      {:ok, resume} ->
+        {:noreply,
+         socket
+         |> put_flash(:info, "Resume saved successfully")
+         |> assign(:resume, resume)}
+
+      {:error, %Ecto.Changeset{} = changeset} ->
+        {:noreply, assign(socket, :changeset, changeset)}
+    end
+  end
+
+  @impl true
+  def render(assigns) do
+    ~H"""
+    <div class="resume-container">
+      <.live_component
+        module={ResumeEditor}
+        id="resume-editor"
+        resume={@resume}
+        templates={@templates}
+      />
+      
+      <.live_component
+        module={ResumePreview}
+        id="resume-preview"
+        resume={@resume}
+      />
+
+      <.live_component
+        module={ExportPanel}
+        id="export-panel"
+        resume={@resume}
+      />
+    </div>
+    """
+  end
+end
+                                </code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card mb-4">
+            <div class="card-header card-header-with-tabs">
+              <h3 class="mb-0">Database Schema</h3>
+              <ul class="nav nav-pills" id="db-schema-tab" role="tablist">
+                <li class="nav-item">
+                  <a
+                    class="nav-link active"
+                    id="mermaid-er-tab"
+                    data-bs-toggle="pill"
+                    href="#mermaid-er"
+                    role="tab"
+                    >Entity Relationship</a
+                  >
+                </li>
+                <li class="nav-item">
+                  <a
+                    class="nav-link"
+                    id="plantuml-er-tab"
+                    data-bs-toggle="pill"
+                    href="#plantuml-er"
+                    role="tab"
+                    >PlantUML</a
+                  >
+                </li>
+              </ul>
+            </div>
+            <div class="card-body">
+              <div class="tab-content" id="db-schema-content">
+                <div
+                  class="tab-pane fade show active"
+                  id="mermaid-er"
+                  role="tabpanel"
+                >
+                  <div class="diagram-wrapper">
+                    <div class="diagram-header">
+                      <div class="diagram-source-selector">
+                        <label>Source:</label>
+                        <select
+                          class="form-select form-select-sm"
+                          onchange="updateDiagramSource(this, 'mermaid')"
+                        >
+                          <option value="code">Code</option>
+                          <option value="encoded">Encoded</option>
+                          <option value="share">Share Link</option>
+                          <option value="svg">SVG Code</option>
+                        </select>
+                      </div>
+                      <button class="btn btn-sm btn-outline-primary copy-btn">
+                        Copy
+                      </button>
+                    </div>
+                    <div class="diagram-content">
+                      <div class="diagram-code">
+                        <div class="code-container">
+                          <span class="language-label">Mermaid</span>
+                          <pre class="language-mermaid"><code>
+erDiagram
+    USERS ||--o{ RESUMES : creates
+    USERS ||--o{ TEMPLATES : customizes
+    RESUMES ||--|| TEMPLATE_VERSIONS : uses
+    TEMPLATES ||--o{ TEMPLATE_VERSIONS : has
+    JOB_POSTS ||--o{ RESUME_MATCHES : generates
+    RESUMES ||--o{ RESUME_MATCHES : matches
+    
+    USERS {
+        uuid id PK
+        string email
+        string hashed_password
+        timestamp inserted_at
+        timestamp updated_at
+    }
+    
+    RESUMES {
+        uuid id PK
+        uuid user_id FK
+        uuid template_version_id FK
+        jsonb content
+        string status
+        timestamp inserted_at
+        timestamp updated_at
+    }
+    
+    TEMPLATES {
+        uuid id PK
+        uuid user_id FK
+        string name
+        string description
+        boolean is_public
+        timestamp inserted_at
+        timestamp updated_at
+    }
+    
+    TEMPLATE_VERSIONS {
+        uuid id PK
+        uuid template_id FK
+        string version
+        jsonb content
+        timestamp inserted_at
+    }
+
+    JOB_POSTS {
+        uuid id PK
+        uuid user_id FK
+        string title
+        text description
+        jsonb parsed_content
+        timestamp inserted_at
+        timestamp updated_at
+    }
+
+    RESUME_MATCHES {
+        uuid id PK
+        uuid resume_id FK
+        uuid job_post_id FK
+        float match_score
+        jsonb match_details
+        timestamp inserted_at
+    }
+                          </code></pre>
+                        </div>
+                      </div>
+                      <div class="diagram-preview"></div>
+                    </div>
+                  </div>
+                </div>
+                <div class="tab-pane fade" id="plantuml-er" role="tabpanel">
+                  <div class="diagram-wrapper">
+                    <div class="diagram-header">
+                      <div class="diagram-source-selector">
+                        <label>Source:</label>
+                        <select
+                          class="form-select form-select-sm"
+                          onchange="updateDiagramSource(this, 'plantuml')"
+                        >
+                          <option value="code">Code</option>
+                          <option value="encoded">Encoded</option>
+                          <option value="share">Share Link</option>
+                          <option value="svg">SVG Code</option>
+                        </select>
+                      </div>
+                      <button class="btn btn-sm btn-outline-primary copy-btn">
+                        Copy
+                      </button>
+                    </div>
+                    <div class="diagram-content">
+                      <div class="diagram-code">
+                        <div class="code-container">
+                          <span class="language-label">PlantUML</span>
+                          <pre class="language-plantuml"><code>
+@startuml Database Schema
+!define table(x) class x << (T,#FFAAAA) >>
+!define primary_key(x) <u>x</u>
+!define foreign_key(x) #x#
+
+table(USERS) {
+  primary_key(id): uuid
+  email: string
+  hashed_password: string
+  inserted_at: timestamp
+  updated_at: timestamp
+}
+
+table(RESUMES) {
+  primary_key(id): uuid
+  foreign_key(user_id): uuid
+  foreign_key(template_version_id): uuid
+  content: jsonb
+  status: string
+  inserted_at: timestamp
+  updated_at: timestamp
+}
+
+table(TEMPLATES) {
+  primary_key(id): uuid
+  foreign_key(user_id): uuid
+  name: string
+  description: text
+  is_public: boolean
+  inserted_at: timestamp
+  updated_at: timestamp
+}
+
+table(TEMPLATE_VERSIONS) {
+  primary_key(id): uuid
+  foreign_key(template_id): uuid
+  version: string
+  content: jsonb
+  inserted_at: timestamp
+}
+
+table(JOB_POSTS) {
+  primary_key(id): uuid
+  foreign_key(user_id): uuid
+  title: string
+  description: text
+  parsed_content: jsonb
+  inserted_at: timestamp
+  updated_at: timestamp
+}
+
+table(RESUME_MATCHES) {
+  primary_key(id): uuid
+  foreign_key(resume_id): uuid
+  foreign_key(job_post_id): uuid
+  match_score: float
+  match_details: jsonb
+  inserted_at: timestamp
+}
+
+USERS "1" -- "*" RESUMES : creates
+USERS "1" -- "*" TEMPLATES : customizes
+RESUMES "1" -- "1" TEMPLATE_VERSIONS : uses
+TEMPLATES "1" -- "*" TEMPLATE_VERSIONS : has
+JOB_POSTS "1" -- "*" RESUME_MATCHES : generates
+RESUMES "1" -- "*" RESUME_MATCHES : matches
+
+@enduml
+                          </code></pre>
+                        </div>
+                      </div>
+                      <div class="diagram-preview"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card mb-4">
+            <div class="card-header">
+              <h3>Database Schema</h3>
+            </div>
+            <div class="card-body">
+              <pre class="language-mermaid"><code>
+erDiagram
+    USERS ||--o{ RESUMES : creates
+    USERS ||--o{ TEMPLATES : customizes
+    RESUMES ||--|| TEMPLATE_VERSIONS : uses
+    TEMPLATES ||--o{ TEMPLATE_VERSIONS : has
+    JOB_POSTS ||--o{ RESUME_MATCHES : generates
+    RESUMES ||--o{ RESUME_MATCHES : matches
+    
+    USERS {
+        uuid id PK
+        string email
+        string hashed_password
+        timestamp inserted_at
+        timestamp updated_at
+    }
+    
+    RESUMES {
+        uuid id PK
+        uuid user_id FK
+        uuid template_version_id FK
+        jsonb content
+        string status
+        timestamp inserted_at
+        timestamp updated_at
+    }
+    
+    TEMPLATES {
+        uuid id PK
+        uuid user_id FK
+        string name
+        string description
+        boolean is_public
+        timestamp inserted_at
+        timestamp updated_at
+    }
+    
+    TEMPLATE_VERSIONS {
+        uuid id PK
+        uuid template_id FK
+        string version
+        jsonb content
+        timestamp inserted_at
+    }
+
+    JOB_POSTS {
+        uuid id PK
+        uuid user_id FK
+        string title
+        text description
+        jsonb parsed_content
+        timestamp inserted_at
+        timestamp updated_at
+    }
+
+    RESUME_MATCHES {
+        uuid id PK
+        uuid resume_id FK
+        uuid job_post_id FK
+        float match_score
+        jsonb match_details
+        timestamp inserted_at
+    }
+      </code></pre>
+            </div>
+          </div>
+
+          <div class="implementation-step">
+            <h4>Schema Creation</h4>
+            <pre><code class="language-bash">
+mix phx.gen.schema User users email:string hashed_password:string
+mix phx.gen.schema Resume resumes user_id:references:users template_version_id:references:template_versions content:jsonb status:string
+mix phx.gen.schema Template templates user_id:references:users name:string description:text is_public:boolean
+mix phx.gen.schema TemplateVersion template_versions template_id:references:templates version:string content:jsonb
+mix phx.gen.schema JobPost job_posts user_id:references:users title:string description:text parsed_content:jsonb
+mix phx.gen.schema ResumeMatch resume_matches resume_id:references:resumes job_post_id:references:job_posts match_score:float match_details:jsonb
+    </code></pre>
+          </div>
+
+          <div class="card mb-4">
+            <div class="card-header">
+              <h3>Context Module Implementation</h3>
+            </div>
+            <div class="card-body">
+              <pre><code class="language-elixir">
+defmodule Finessume.Resumes do
+  import Ecto.Query
+  alias Finessume.Repo
+  alias Finessume.Resumes.{Resume, ResumeMatch}
+  alias Finessume.JobPosts.JobPost
+
+  def create_resume(attrs \\ %{}) do
+    %Resume{}
+    |> Resume.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  def match_with_job_post(%Resume{} = resume, %JobPost{} = job_post) do
+    match_score = calculate_match_score(resume.content, job_post.parsed_content)
+    
+    %ResumeMatch{}
+    |> ResumeMatch.changeset(%{
+      resume_id: resume.id,
+      job_post_id: job_post.id,
+      match_score: match_score,
+      match_details: calculate_match_details(resume.content, job_post.parsed_content)
+    })
+    |> Repo.insert()
+  end
+
+  defp calculate_match_score(resume_content, job_content) do
+    # AI-powered matching algorithm implementation
+    # Returns a float between 0 and 1
+  end
+
+  defp calculate_match_details(resume_content, job_content) do
+    # Detailed matching analysis
+    # Returns a map of matching criteria and scores
+  end
+end
+      </code></pre>
+            </div>
+          </div>
+
+          <div class="card mb-4">
+            <div class="card-header">
+              <h3>Router Configuration</h3>
+            </div>
+            <div class="card-body">
+              <div class="code-example">
+                <div class="code-example-header">
+                  <span>Router Definition</span>
+                </div>
+                <div class="code-example-content">
+                  <pre><code class="language-elixir">
+defmodule FinessumeWeb.Router do
+  use FinessumeWeb, :router
+
+  pipeline :browser do
+    plug :accepts, ["html"]
+    plug :fetch_session
+    plug :fetch_live_flash
+    plug :put_root_layout, html: {FinessumeWeb.Layouts, :root}
+    plug :protect_from_forgery
+    plug :put_secure_browser_headers
+  end
+
+  pipeline :api do
+    plug :accepts, ["json"]
+  end
+
+  scope "/", FinessumeWeb do
+    pipe_through :browser
+
+    live "/", PageLive, :index
+    
+    live "/resumes", ResumeLive.Index, :index
+    live "/resumes/new", ResumeLive.Index, :new
+    live "/resumes/:id/edit", ResumeLive.Index, :edit
+    
+    live "/templates", TemplateLive.Index, :index
+    live "/templates/new", TemplateLive.Index, :new
+    live "/templates/:id/edit", TemplateLive.Index, :edit
+    
+    live "/job-posts", JobPostLive.Index, :index
+    live "/job-posts/new", JobPostLive.Index, :new
+    live "/job-posts/:id", JobPostLive.Show, :show
+  end
+
+  scope "/api", FinessumeWeb do
+    pipe_through :api
+
+    resources "/resumes", ResumeController, except: [:new, :edit]
+    resources "/matches", ResumeMatchController, only: [:create, :show]
+  end
+end
+                  </code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card mb-4">
+            <div class="card-header">
+              <h3>LiveView Component Structure</h3>
+            </div>
+            <div class="card-body">
+              <pre class="language-mermaid"><code>
+graph TB
+    subgraph "Resume Management"
+        Index[ResumeLive.Index]
+        Form[ResumeLive.FormComponent]
+        Card[ResumeComponents.resume_card]
+        Preview[ResumeComponents.resume_preview]
+    end
+
+    subgraph "Job Integration"
+        JobMatch[JobPostLive.Show]
+        MatchCard[JobComponents.match_card]
+        ScoreDisplay[JobComponents.score_display]
+    end
+
+    Index --> Form
+    Index --> Card
+    Form --> Preview
+    JobMatch --> MatchCard
+    MatchCard --> ScoreDisplay
+
+    style Index fill:#f9f,stroke:#333,stroke-width:2px
+    style JobMatch fill:#bbf,stroke:#333,stroke-width:2px
+              </code></pre>
+            </div>
+          </div>
+
+          <div class="implementation-step">
+            <h4>Component Implementation Steps</h4>
+            <ol>
+              <li>Define base components in CoreComponents</li>
+              <li>Create domain-specific components (ResumeComponents)</li>
+              <li>Implement LiveView modules</li>
+              <li>Set up routing</li>
+              <li>Configure layouts</li>
+            </ol>
+          </div>
+
+          <div class="card mb-4">
+            <div class="card-header">
+              <h3>URL Structure</h3>
+            </div>
+            <div class="card-body">
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th>Path</th>
+                    <th>LiveView Module</th>
+                    <th>Action</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>/resumes</td>
+                    <td>ResumeLive.Index</td>
+                    <td>:index</td>
+                    <td>List all resumes</td>
+                  </tr>
+                  <tr>
+                    <td>/resumes/new</td>
+                    <td>ResumeLive.Index</td>
+                    <td>:new</td>
+                    <td>Create new resume</td>
+                  </tr>
+                  <tr>
+                    <td>/resumes/:id/edit</td>
+                    <td>ResumeLive.Index</td>
+                    <td>:edit</td>
+                    <td>Edit existing resume</td>
+                  </tr>
+                  <tr>
+                    <td>/job-posts</td>
+                    <td>JobPostLive.Index</td>
+                    <td>:index</td>
+                    <td>List job postings</td>
+                  </tr>
+                  <tr>
+                    <td>/api/resumes</td>
+                    <td>ResumeController</td>
+                    <td>REST</td>
+                    <td>API endpoints</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <section id="requirements" class="doc-section">
+          <h2>Application Requirements</h2>
+
+          <div class="card mb-4">
+            <div class="card-header">
+              <h3>System Requirements</h3>
+            </div>
+            <div class="card-body">
+              <h4>Development Environment</h4>
+              <ul>
+                <li>Node.js 16+</li>
+                <li>Elixir 1.14+</li>
+                <li>Phoenix 1.7+</li>
+                <li>PostgreSQL 13+</li>
+              </ul>
+
+              <h4>Production Requirements</h4>
+              <ul>
+                <li>Linux/Unix environment</li>
+                <li>2GB RAM minimum</li>
+                <li>PostgreSQL database</li>
+                <li>Redis (optional, for caching)</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <section id="usage" class="doc-section">
+          <h2>Usage Guide</h2>
+
+          <div class="implementation-step">
+            <h4>Quick Start</h4>
+            <ol>
+              <li>Install dependencies</li>
+              <li>Configure environment variables</li>
+              <li>Start the application</li>
+              <li>Navigate to the web interface</li>
+            </ol>
+          </div>
+
+          <!-- Add detailed usage instructions -->
+        </section>
+
+        <section id="dev-environment" class="doc-section">
+          <h2>Development Environment</h2>
+
+          <div class="card mb-4">
+            <div class="card-header">
+              <h3>Setup Instructions</h3>
+            </div>
+            <div class="card-body">
+              <!-- Add development setup instructions -->
+            </div>
+          </div>
+        </section>
+
+        <section id="object-reference" class="doc-section">
+          <h2>Object Reference</h2>
+
+          <div class="card mb-4">
+            <div class="card-header card-header-with-tabs">
+              <h3 class="mb-0">Schema Definitions</h3>
+              <ul class="nav nav-pills" id="schema-tab" role="tablist">
+                <li class="nav-item">
+                  <a
+                    class="nav-link active"
+                    data-bs-toggle="pill"
+                    href="#resume-schema"
+                    >Resume</a
+                  >
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" data-bs-toggle="pill" href="#job-schema"
+                    >Job</a
+                  >
+                </li>
+              </ul>
+            </div>
+            <div class="card-body">
+              <div class="tab-content">
+                <div class="tab-pane fade show active" id="resume-schema">
+                  <!-- Add resume schema content -->
+                </div>
+                <div class="tab-pane fade" id="job-schema">
+                  <!-- Add job schema content -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <footer class="footer border-top">
+      <div class="container-fluid">
+        <div class="row align-items-center">
+          <div class="col-3">
+            <div class="btn-group">
+              <button class="btn btn-primary" id="downloadPDF">
+                <i class="bi bi-file-pdf"></i> Download PDF
+              </button>
+              <button
+                class="btn btn-outline-primary"
+                id="shareLink"
+                data-bs-toggle="modal"
+                data-bs-target="#shareModal"
+              >
+                <i class="bi bi-link-45deg"></i> Share Link
+              </button>
+            </div>
+          </div>
+          <div class="col-6 text-center">
+            <strong>"Finessume"</strong> is a Pegues OPSCORP Labs Experiment<br />
+            © 2021-2025 Pegues OPSCORP. For research and demonstration.<br />
+            Made with <span class="footer-heart">❤️</span> in Jersey City
+          </div>
+          <div class="col-3 text-end">
+            <small class="text-muted"
+              >Last updated: <span id="lastUpdated">Never</span></small
+            ><br />
+            <small class="text-muted"
+              >Using
+              <span id="schemaInfo"
+                >default schema: parsedResume_schema.json (v3.1.3)</span
+              ></small
+            >
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      // Define the function in global scope
+      function updateDiagramSource(select, type) {
+        const wrapper = select.closest(".diagram-wrapper");
+        const codeContainer = wrapper.querySelector(".diagram-code");
+        const code = wrapper.querySelector("pre code").textContent.trim();
+
+        let content = "";
+        switch (select.value) {
+          case "code":
+            content = code;
+            break;
+          case "encoded":
+            content =
+              type === "mermaid" ? btoa(code) : plantumlEncoder.encode(code);
+            break;
+          case "share":
+            const encoded =
+              type === "mermaid" ? btoa(code) : plantumlEncoder.encode(code);
+            content =
+              type === "mermaid"
+                ? `https://mermaid.ink/svg/pako:${encoded}`
+                : `http://www.plantuml.com/plantuml/svg/${encoded}`;
+            break;
+          case "svg":
+            const img = wrapper.querySelector(".diagram-preview img");
+            content = img ? img.outerHTML : "SVG not available";
+            break;
+        }
+
+        const sourceType = select.options[select.selectedIndex].text;
+        codeContainer.innerHTML = `
+            <div class="code-container">
+                <span class="language-label">${sourceType}</span>
+                <pre class="language-${
+                  type === "mermaid" ? "mermaid" : "plantuml"
+                }"><code>${content}</code></pre>
+            </div>
+          `;
+        Prism.highlightAll();
+      }
+
+      document.addEventListener("DOMContentLoaded", function () {
+        // Initialize Prism.js
+        Prism.highlightAll();
+
+        // Function to encode diagram content
+        function encodeDiagram(content, type) {
+          if (type === "plantuml") {
+            return plantumlEncoder.encode(content);
+          } else if (type === "mermaid") {
+            return btoa(content.trim());
+          }
+          return "";
+        }
+
+        // Function to update all diagrams in a tab group
+        function updateAllDiagrams(tabGroupId) {
+          const tabContent = document.querySelector(`#${tabGroupId}`);
+          if (!tabContent) return;
+
+          tabContent
+            .querySelectorAll('pre[class*="language-"]')
+            .forEach((pre) => {
+              const type = pre.className.match(/language-(\w+)/)[1];
+              const content = pre.textContent.trim();
+              const previewDiv = pre
+                .closest(".diagram-container")
+                .querySelector(".diagram-preview");
+
+              if (!previewDiv) return;
+
+              const encoded = encodeDiagram(content, type);
+              if (type === "mermaid") {
+                previewDiv.innerHTML = `<img src="https://mermaid.ink/svg/pako:${encoded}" alt="Mermaid Diagram" />`;
+              } else if (type === "plantuml") {
+                previewDiv.innerHTML = `<img src="http://www.plantuml.com/plantuml/svg/${encoded}" alt="PlantUML Diagram" />`;
+              }
+            });
+        }
+
+        // Update all diagram tabs
+        const diagramTabGroups = [
+          "diagrams-content",
+          "phoenix-diagrams-content",
+          "phoenix-live-tab",
+        ];
+        diagramTabGroups.forEach((groupId) => updateAllDiagrams(groupId));
+
+        // Handle tab changes for all diagram groups
+        diagramTabGroups.forEach((groupId) => {
+          document
+            .querySelectorAll(`[href^="#"][data-bs-toggle="pill"]`)
+            .forEach((tab) => {
+              tab.addEventListener("shown.bs.tab", (e) => {
+                const targetId = e.target.getAttribute("href").substring(1);
+                const tabContent = document.getElementById(targetId);
+                if (tabContent) {
+                  const diagramPre = tabContent.querySelector(
+                    'pre[class*="language-"]'
+                  );
+                  if (diagramPre) {
+                    const type =
+                      diagramPre.className.match(/language-(\w+)/)[1];
+                    updateAllDiagrams(tabContent.closest(".tab-content").id);
+                  }
+                }
+              });
+            });
+        });
+
+        // Handle editor buttons
+        document
+          .querySelectorAll(".open-live-editor, .open-plantuml")
+          .forEach((btn) => {
+            btn.addEventListener("click", function (e) {
+              e.preventDefault();
+              const container = this.closest(".diagram-container");
+              const pre = container.querySelector('pre[class*="language-"]');
+              const type = pre.className.match(/language-(\w+)/)[1];
+              const content = pre.textContent.trim();
+              const encoded = encodeDiagram(content, type);
+
+              const urls = {
+                mermaid: `https://mermaid.ink/svg/pako:${encoded}`,
+                plantuml: `http://www.plantuml.com/plantuml/svg/${encoded}`,
+              };
+
+              window.open(urls[type], "_blank");
+            });
+          });
+
+        // Initial load of all diagrams
+        diagramTabGroups.forEach((groupId) => {
+          const activeTab = document.querySelector(
+            `#${groupId} .tab-pane.active`
+          );
+          if (activeTab) {
+            updateAllDiagrams(groupId);
+          }
+        });
+
+        // Add Monaco Editor initialization
+        require.config({
+          paths: {
+            vs: "https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.36.1/min/vs",
+          },
+        });
+        require(["vs/editor/editor.main"], function () {
+          // Initialize editors for code examples
+          document
+            .querySelectorAll(".code-example-content")
+            .forEach((container) => {
+              const editor = monaco.editor.create(container, {
+                value: container.textContent,
+                language: "javascript",
+                theme: "vs-dark",
+                readOnly: true,
+                minimap: { enabled: false },
+              });
+            });
+        });
+
+        // Add smooth scrolling for anchor links
+        document.querySelectorAll('.sidebar a[href^="#"]').forEach((anchor) => {
+          anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            const section = document.querySelector(this.getAttribute("href"));
+            if (section) {
+              section.scrollIntoView({
+                behavior: "smooth",
+              });
+              // Update active state
+              document
+                .querySelectorAll(".sidebar a")
+                .forEach((a) => a.classList.remove("active"));
+              this.classList.add("active");
+            }
+          });
+        });
+
+        // Handle initial active state based on scroll position
+        window.addEventListener("scroll", function () {
+          const sections = document.querySelectorAll(".doc-section");
+          let currentSection = "";
+
+          sections.forEach((section) => {
+            const sectionTop = section.offsetTop;
+            if (pageYOffset >= sectionTop - 60) {
+              currentSection = "#" + section.getAttribute("id");
+            }
+          });
+
+          document.querySelectorAll(".sidebar a").forEach((a) => {
+            a.classList.remove("active");
+            if (a.getAttribute("href") === currentSection) {
+              a.classList.add("active");
+            }
+          });
+        });
+
+        // Function to update diagram source
+        function updateDiagramSource(select, type) {
+          const wrapper = select.closest(".diagram-wrapper");
+          const codeContainer = wrapper.querySelector(".diagram-code");
+          const code = wrapper.querySelector("pre code").textContent.trim();
+
+          let content = "";
+          switch (select.value) {
+            case "code":
+              content = code;
+              break;
+            case "encoded":
+              content =
+                type === "mermaid" ? btoa(code) : plantumlEncoder.encode(code);
+              break;
+            case "share":
+              const encoded =
+                type === "mermaid" ? btoa(code) : plantumlEncoder.encode(code);
+              content =
+                type === "mermaid"
+                  ? `https://mermaid.ink/svg/pako:${encoded}`
+                  : `http://www.plantuml.com/plantuml/svg/${encoded}`;
+              break;
+            case "svg":
+              const img = wrapper.querySelector(".diagram-preview img");
+              content = img ? img.outerHTML : "SVG not available";
+              break;
+          }
+
+          const sourceType = select.options[select.selectedIndex].text;
+          codeContainer.innerHTML = `
+            <div class="code-container">
+                <span class="language-label">${sourceType}</span>
+                <pre class="language-${
+                  type === "mermaid" ? "mermaid" : "plantuml"
+                }"><code>${content}</code></pre>
+            </div>
+          `;
+          Prism.highlightAll();
+        }
+
+        // Enhance the existing diagram update function
+        function updateAllDiagrams(tabGroupId) {
+          // ...existing updateAllDiagrams code...
+          // Add language labels after updating
+          document.querySelectorAll(".code-container").forEach((container) => {
+            if (!container.querySelector(".language-label")) {
+              const pre = container.querySelector("pre");
+              const language = pre.className.match(/language-(\w+)/)[1];
+              const label = document.createElement("span");
+              label.className = "language-label";
+              label.textContent =
+                language.charAt(0).toUpperCase() + language.slice(1);
+              container.insertBefore(label, pre);
+            }
+          });
+        }
+      });
+    </script>
+  </body>
+</html>
