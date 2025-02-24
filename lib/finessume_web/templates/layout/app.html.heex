@@ -1,0 +1,16 @@
+{assign_new(@conn, :current_page, fn -> "default" end)}
+<html>
+  <head>
+    <!-- ... -->
+  </head>
+  <body>
+    <header>
+      <!-- Use Map.get to provide a default if @current_page is missing -->
+      <p>Current Page: {Map.get(assigns, :current_page, "default")}</p>
+      <!-- ... -->
+    </header>
+    <main role="main">
+      {@inner_content}
+    </main>
+  </body>
+</html>
