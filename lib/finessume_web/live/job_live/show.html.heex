@@ -2,10 +2,8 @@
   <.header>
     {@job.title}
     <:subtitle>At {@job.company}</:subtitle>
-    <:actions>
-      <.link navigate={~p"/jobs/#{@job.id}/edit"} class="btn btn-secondary">Edit</.link>
-    </:actions>
   </.header>
+  <.link navigate={~p"/jobs/#{@job.id}/edit"} class="btn btn-secondary mb-4">Edit</.link>
 
   <.list>
     <:item title="Title">{@job.title}</:item>

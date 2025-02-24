@@ -2,7 +2,7 @@ defmodule FinessumeWeb.JobLive.Edit do
   use FinessumeWeb, :live_view
 
   alias Finessume.Jobs
-  alias Finessume.Jobs.Job
+  # alias Finessume.Jobs.Job
 
   @impl true
   def mount(%{"id" => id}, _session, socket) do
@@ -38,7 +38,7 @@ defmodule FinessumeWeb.JobLive.Edit do
   end
 
   @impl true
-  def handle_event("save", %{"job" => job_params}, socket) do
+  def handle_event("save", %{"job" => _job_params}, socket) do
     # Handle update logic here (e.g., Jobs.update_job(job, job_params))
     {:noreply, socket}
   end
