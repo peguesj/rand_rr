@@ -9,10 +9,13 @@ defmodule FinessumeWeb.ResumeLive.Index do
 
   @impl true
   def mount(_params, _session, socket) do
+    resumes = list_resumes()
+    resume_templates = list_templates()
+
     {:ok,
      socket
-     |> assign(:resumes, list_resumes())
-     |> assign(:templates, list_templates())
+     |> assign(:resumes, resumes)
+     |> assign(:templates, resume_templates)
      |> assign(:page_title, "Resume List")
      |> assign(:current_page, :resumes)}
   end
@@ -26,13 +29,17 @@ defmodule FinessumeWeb.ResumeLive.Index do
   def render(assigns) do
     ~H"""
     <.container class="mt-10">
-      <Typography.h2>Resumes</Typography.h2>
-      <Button.button link_type="live_patch" to={~p"/resumes/new"}>
-        New Resume
-      </Button.button>
-      <div class="grid grid-cols-1 gap-4">
+      <div class="flex justify-between items-center mb-6">
+        <Typography.h2>Resumes</Typography.h2>
+        <Button.button link_type="live_patch" to={~p"/resumes/new"}>
+          New Resume
+        </Button.button>
+      </div>
+      <div class="space-y-6">
         <%= for resume <- @resumes do %>
-          <.resume_card resume={resume} />
+          <div id={"resume-#{resume.id}"} class="mb-4">
+            <.resume_card resume={resume} />
+          </div>
         <% end %>
       </div>
     </.container>
@@ -57,11 +64,19 @@ defmodule FinessumeWeb.ResumeLive.Index do
     |> assign(:resume, nil)
   end
 
+
   defp list_resumes do
     Resumes.list_resumes()
   end
 
+
   defp list_templates do
-    Templates.list_templates()
+    #TODO: implement select templates to apply to resumes in both show and edit layouts, and controlling logic in the resume controller(s)
+    Resumes.list_resumes()
+    |> Enum.map(fn resume ->
+       version = resume.template_version()
+       template = Templates.get_template!(version.template_id)
+       {resume, template, version}
+    end)
   end
-end
+  end
