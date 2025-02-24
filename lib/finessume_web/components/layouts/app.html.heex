@@ -1,33 +1,29 @@
 <% import FinessumeWeb.CoreComponents %>
 
 <div class="min-h-screen bg-gray-100">
-  <header class="bg-white shadow">
-    <nav class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      <div class="flex h-16 items-center justify-between">
-        <div class="flex items-center">
-          <div class="hidden md:block">
-            <div class="flex items-baseline space-x-4">
-              <%= for {name, href, text} <- FinessumeWeb.Layouts.navigation_items() do %>
-                <.link
-                  navigate={href}
-                  class={[
-                    "inline-flex items-center border-b-2 px-1 pt-1 text-sm font-medium",
-                    @current_page == name && "border-indigo-500 text-gray-900",
-                    @current_page != name && "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700"
-                  ]}
-                >
-                  <%= text %>
-                </.link>
-              <% end %>
-            </div>
-          </div>
-        </div>
+  <header class="px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center justify-between border-b border-zinc-100 py-3 text-sm">
+      <div class="flex items-center gap-4">
+        <a href="/">
+          <img src={~p"/images/logo.svg"} width="36" />
+        </a>
+        <p class="bg-brand/5 text-brand rounded-full px-2 font-medium leading-6">
+          v<%= Application.spec(:finessume, :vsn) %>
+        </p>
       </div>
-    </nav>
+      <div class="flex items-center gap-4 font-semibold leading-6 text-zinc-900">
+        <a href="/resumes" class="hover:text-zinc-700">
+          Resumes
+        </a>
+        <a href="/jobs" class="hover:text-zinc-700">
+          Jobs
+        </a>
+      </div>
+    </div>
   </header>
 
-  <main>
-    <div class="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
+  <main class="px-4 py-20 sm:px-6 lg:px-8">
+    <div class="mx-auto max-w-2xl">
       <.flash_group flash={@flash} />
       <%= @inner_content %>
     </div>
