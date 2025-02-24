@@ -37,7 +37,7 @@ defmodule Finessume.MixProject do
       {:ecto_sql, "~> 3.10"},
       {:postgrex, ">= 0.0.0"},
       {:phoenix_html, "~> 4.1"},
-      {:phoenix_live_reload, "~> 1.5", only: [:dev, :test]},
+      {:phoenix_live_reload, "~> 1.5", only: :dev},
       {:phoenix_live_view, "~> 1.0.4"},
       {:heroicons,
        github: "tailwindlabs/heroicons",
@@ -59,7 +59,10 @@ defmodule Finessume.MixProject do
       {:petal_components, "~> 2.8.2"},
       {:rename_project, "~> 0.1.0", only: :dev},
       {:bcrypt_elixir, "~> 3.0"},
-      {:faker, "~> 0.17.0"}
+      {:faker, "~> 0.17.0"},
+      {:absinthe, "~> 1.7"},
+      {:absinthe_plug, "~> 1.5"},
+      {:absinthe_phoenix, "~> 2.0"}
     ]
   end
 
