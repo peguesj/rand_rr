@@ -5,6 +5,23 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "type": "mix_task",
+            "request": "launch",
+            "name": "mix task",
+            "task": "task",
+            "taskArgs": [],
+            "projectDir": "${workspaceRoot}"
+        },
+        {
+			"type": "mix",
+			"task": "test",
+			"group": "test",
+			"problemMatcher": [
+				"$mixCompileError"
+			],
+			"label": "mix: test"
+		},
+        {
             "type": "node",
             "name": "Jest: All Tests",
             "request": "launch",
@@ -69,6 +86,15 @@
             "console": "integratedTerminal",
             "internalConsoleOptions": "neverOpen",
             "disableOptimisticBPs": true
+        },
+        {
+            "name": "Elixir Mix Test",
+            "type": "mix_task",
+            "request": "launch",
+            "task": "test",
+            "taskArgs": ["test/finessume/ai/client_test.exs"],
+            "projectDir": "${workspaceFolder}",
+            "exitAfterTaskReturns": false
         }
     ]
 }
