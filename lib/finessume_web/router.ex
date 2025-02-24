@@ -29,7 +29,8 @@ defmodule FinessumeWeb.Router do
     # Job routes
     live("/jobs", JobLive.Index, :index)
     live("/jobs/new", JobLive.Index, :new)
-    live("/jobs/:id/edit", JobLive.Edit, :edit)  # NEW route for editing a job
+    # NEW route for editing a job
+    live("/jobs/:id/edit", JobLive.Edit, :edit)
     live("/jobs/:id", JobLive.Show, :show)
   end
 
