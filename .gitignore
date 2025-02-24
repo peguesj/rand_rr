@@ -13,3 +13,11 @@ jd2.txt
 jdp.json
 resume.json
 .tmp/processed-job.json
+deps/
+_build/
+config/*.secret.exs
+nodeenv/*
+nodeenv*
+._*
+priv/static/*
+.vscode/*
