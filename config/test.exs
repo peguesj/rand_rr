@@ -21,7 +21,7 @@ config :finessume, FinessumeWeb.Endpoint,
   server: false
 
 # In test we don't send emails.
-config :petal_boilerplate, PetalBoilerplate.Mailer, adapter: Swoosh.Adapters.Test
+config :petal_boilerplate, Finessume.Mailer, adapter: Swoosh.Adapters.Test
 
 # Disable swoosh api client as it is only required for production adapters.
 config :swoosh, :api_client, false
@@ -31,3 +31,6 @@ config :logger, level: :warning
 
 # Initialize plugs at runtime for faster test compilation
 config :phoenix, :plug_init_mode, :runtime
+
+# Configure bcrypt to use mock in test environment
+config :bcrypt_elixir, :bcrypt_module, Finessume.Test.Mocks.MockBcrypt
