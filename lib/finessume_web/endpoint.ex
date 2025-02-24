@@ -1,13 +1,10 @@
 defmodule FinessumeWeb.Endpoint do
   use Phoenix.Endpoint, otp_app: :finessume
 
-  # The session will be stored in the cookie and signed,
-  # this means its contents can be read but not tampered with.
-  # Set :encryption_salt if you would also like to encrypt it.
   @session_options [
     store: :cookie,
     key: "_finessume_key",
-    signing_salt: "EXB3i5cd",
+    signing_salt: "your-signing-salt-here",
     same_site: "Lax"
   ]
 
@@ -25,7 +22,7 @@ defmodule FinessumeWeb.Endpoint do
   # :code_reloader configuration of your endpoint.
   if code_reloading? do
     socket("/phoenix/live_reload/socket", Phoenix.LiveReloader.Socket)
-    plug(Phoenix.LiveReloader)
+    plug(Phoenix.LiveReloader, api_version: 2)
     plug(Phoenix.CodeReloader)
     plug(Phoenix.Ecto.CheckRepoStatus, otp_app: :finessume)
   end
@@ -47,11 +44,8 @@ defmodule FinessumeWeb.Endpoint do
   plug(Plug.MethodOverride)
   plug(Plug.Head)
 
-  plug(Plug.Session,
-    store: :cookie,
-    key: "_finessume_key",
-    signing_salt: "your_signing_salt"
-  )
+  # Use the same session options in the Plug.Session
+  plug(Plug.Session, @session_options)
 
   plug(FinessumeWeb.Router)
 end

@@ -5,16 +5,16 @@ defmodule Finessume.Templates.Template do
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id
   schema "templates" do
-    field :name, :string
-    field :description, :string
-    # Ensure this field is defined
-    field :content, :map
-    field :is_public, :boolean, default: false
-    field :version, :string
-    field :schema_version, :string, default: "1.0.0"
+    field(:name, :string)
+    field(:description, :string)
+    field(:content, :map)
+    field(:is_public, :boolean, default: false)
+    field(:version, :string)
+    field(:schema_version, :string, default: "1.0.0")
 
-    belongs_to :user, Finessume.Accounts.User
-    has_many :resumes, Finessume.Resumes.Resume
+    belongs_to(:user, Finessume.Accounts.User)
+    has_many(:template_versions, Finessume.Templates.TemplateVersion)
+    has_many(:resumes, through: [:template_versions, :resumes])
 
     timestamps()
   end

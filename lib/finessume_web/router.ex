@@ -10,6 +10,7 @@ defmodule FinessumeWeb.Router do
     plug(:put_root_layout, {FinessumeWeb.Layouts, :root})
     plug(:protect_from_forgery)
     plug(:put_secure_browser_headers)
+    plug(:assign_current_user) #TODO: implement user management and authentication as well as SaaS tenancy
   end
 
   pipeline :api do
@@ -51,5 +52,13 @@ defmodule FinessumeWeb.Router do
 
     resources("/resumes", ResumeController, except: [:new, :edit])
     resources("/matches", ResumeMatchController, only: [:create, :show])
+  end
+
+  @dialyzer {:nowarn_function, assign_current_user: 2}
+  defp assign_current_user(conn, _opts) do
+    #TODO: implement user management and authentication as well as SaaS tenancy
+    conn
+    |> assign(:current_user, get_session(conn, :current_user))
+    |> put_session(:live_socket_id, "users_socket:#{get_session(conn, :user_id)}")
   end
 end
