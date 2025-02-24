@@ -17,19 +17,6 @@ defmodule FinessumeWeb.CoreComponentTypography do
   Slots:
     - inner_block: The content to be rendered inside the paragraph element.
   """
-
-  @doc """
-  Renders a level-two heading (<h2>) element with increased font size and bold styling.
-
-  This function accepts an optional CSS class for extra style customization and a required
-  inner block slot for dynamic header content.
-
-  Attributes:
-    - class: A string with additional CSS classes. Defaults to an empty string.
-
-  Slots:
-    - inner_block: The content to be rendered inside the header element.
-  """
   use Phoenix.Component
 
   attr :class, :string, default: ""

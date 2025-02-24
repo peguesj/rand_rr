@@ -1,7 +1,7 @@
 defmodule FinessumeWeb.Layouts do
   use FinessumeWeb, :html
-  use PetalComponents
-  alias PetalComponents.Container
+  # use PetalComponents
+  # alias FinesseumeWeb.CoreComponents.Container
   import FinessumeWeb.CoreComponentTypography, only: [text: 1]
 
   def root(assigns) do

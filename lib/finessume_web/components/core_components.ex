@@ -1,7 +1,7 @@
 defmodule FinessumeWeb.CoreComponents do
   use Phoenix.Component
-  import FinessumeWeb.CoreComponentTypography
-  import Phoenix.HTML.Form
+  # import FinessumeWeb.CoreComponentTypography
+  # import Phoenix.HTML.Form
   use PetalComponents
   slot(:inner_block, required: true)
   slot(:subtitle, required: false)
@@ -81,13 +81,13 @@ defmodule FinessumeWeb.CoreComponents do
         <tbody class="relative divide-y divide-zinc-100 border-t border-zinc-200 text-sm leading-6 text-zinc-700">
           <tr :for={row <- @rows} id={@id && "#{@id}-#{Phoenix.Param.to_param(row)}"}>
             <td
-              :for={{col, i} <- Enum.with_index(@col)}
+              :for={col_with_index <- Enum.with_index(@col)}
               phx-click={@row_click && @row_click.(row)}
               class={["p-0", @row_click && "hover:cursor-pointer"]}
             >
               <div class="block py-4 pr-6">
                 <span class="relative">
-                  {render_slot(col, row)}
+                  {render_slot(elem(col_with_index, 0), row)}
                 </span>
               </div>
             </td>
