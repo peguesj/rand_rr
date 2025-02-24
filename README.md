@@ -1,334 +1,3 @@
-<<<<<<< Updated upstream
-# JPres-Gen: Professional Resume Generator
-
-A professional resume generation and management system with dynamic templating and schema validation.
-
-## Architecture Overview
-
-```plantuml
-@startuml Architecture
-skinparam componentStyle uml2
-skinparam backgroundColor #FFFFFF
-
-package "Frontend" {
-    [Editor UI] as editor
-    [Preview Panel] as preview
-    [Schema Validator] as validator
-    [PDF Generator] as pdf
-}
-
-package "Core Services" {
-    [Resume Renderer] as renderer
-    [Template Engine] as template
-    [Schema Manager] as schema
-}
-
-database "Assets" {
-    folder "Schemas" {
-        [Resume Schema]
-        [Job Posting Schema]
-    }
-    folder "Templates" {
-        [Default Template]
-        [Custom Templates]
-    }
-}
-
-editor --> validator : validates input
-editor --> renderer : sends data
-renderer --> template : uses
-validator --> schema : uses
-preview --> renderer : displays output
-pdf --> preview : captures
-schema --> [Resume Schema] : reads
-schema --> [Job Posting Schema] : reads
-template --> [Default Template] : loads
-template --> [Custom Templates] : loads
-
-@enduml
-```
-
-## Data Flow
-
-```plantuml
-@startuml DataFlow
-!theme plain
-skinparam backgroundColor #FFFFFF
-
-start
-:User Input;
-fork
-    :Schema Validation;
-    if (Valid?) then (yes)
-        :Update Data Model;
-    else (no)
-        :Show Error;
-        end
-    endif
-fork again
-    :Real-time Preview;
-    :Render Template;
-end fork
-:Generate PDF/Share;
-stop
-
-@enduml
-```
-
-## UI Component Layout
-
-```plantuml
-@startuml UILayout
-!theme plain
-skinparam backgroundColor #FFFFFF
-
-package "Editor Interface" {
-    component Header {
-        [Logo]
-        [Settings]
-    }
-
-    component "Main Content" {
-        package "Left Panel" {
-            [Editor Controls]
-            [Form Fields]
-            [JSON Preview]
-        }
-
-        package "Right Panel" {
-            [Resume Preview]
-            [Page Controls]
-        }
-    }
-
-    component Footer {
-        [Export Options]
-        [Status Info]
-    }
-}
-
-Header --> "Main Content"
-"Main Content" --> Footer
-[Editor Controls] --> [Form Fields]
-[Form Fields] ..> [Resume Preview] : updates
-[Page Controls] --> [Resume Preview]
-[Export Options] --> [Resume Preview]
-
-@enduml
-```
-
-## State Management
-
-```plantuml
-@startuml StateManagement
-!theme plain
-skinparam backgroundColor #FFFFFF
-
-state "Initial Load" as init
-state "Editor Active" as editing {
-    state "Form Input" as input
-    state "Validation" as validate
-    state "Preview Update" as preview
-    state "Auto Save" as save
-}
-state "Export Mode" as export {
-    state "Generate PDF" as pdf
-    state "Create Share Link" as share
-}
-
-[*] --> init
-init --> editing
-input --> validate
-validate --> preview
-preview --> save
-save --> input
-
-editing --> export : Export Request
-export --> editing : Return to Editor
-export --> [*] : Close
-
-@enduml
-```
-
-## Schema Validation Process
-
-```plantuml
-@startuml SchemaValidation
-!theme plain
-skinparam backgroundColor #FFFFFF
-
-participant "Editor UI" as ui
-participant "Validator" as validator
-participant "Schema Manager" as schema
-participant "Renderer" as renderer
-
-ui -> validator: Input Change
-activate validator
-
-validator -> schema: Get Schema
-activate schema
-schema --> validator: Schema Definition
-deactivate schema
-
-validator -> validator: Validate Input
-alt Valid Input
-    validator --> ui: Success
-    ui -> renderer: Update Preview
-else Invalid Input
-    validator --> ui: Error Details
-    ui -> ui: Show Error
-end
-
-deactivate validator
-
-@enduml
-```
-
-## Installation
-
-```bash
-npm install @pyj/finnesse
-```
-
-## Available Commands
-
-### Development Commands
-
-```bash
-# Start the development server
-npm start
-
-# Watch for CSS changes
-npm run watch-css
-
-# Watch for JavaScript changes
-npm run watch-js
-
-# Run tests in watch mode
-npm run test:watch
-```
-
-### Testing Commands
-
-```bash
-# Run all tests with coverage
-npm test
-
-# Run unit tests only
-npm run test:unit
-
-# Run integration tests
-npm run test:integration
-```
-
-### Build Commands
-
-```bash
-# Build everything
-npm run build
-
-# Build CSS only
-npm run build-css
-
-# Build JavaScript only
-npm run build-js
-```
-
-### Resume Processing
-
-```bash
-# Process a resume against a job posting
-npm run finesse-resume -- -r /path/to/resume.json -j /path/to/job.json -o output.json
-
-# Process a job posting
-npm run job-process
-
-# Run the finesse service
-npm run finesse
-```
-
-### Job Processing Commands
-
-```bash
-# Process a job posting from text or file
-npm run process-job -- -i "job description text" -o processed-job.json
-# OR
-npm run process-job -- -i job-description.txt -o processed-job.json
-
-# Process a resume against a job posting
-npm run finesse-resume -- -r resume.json -j job.json -o enhanced-resume.json
-```
-
-### Validation Commands
-
-```bash
-# Validate schemas
-npm run validate:schema
-
-# Validate general content
-npm run validate
-```
-
-### Code Quality Commands
-
-```bash
-# Format code
-npm run format
-
-# Run linter
-npm run lint
-```
-
-### Publishing Commands
-
-```bash
-# Prepare for publishing
-npm run prepublishOnly
-
-# Publish to npm
-npm run publish-npm
-
-# Create a new release
-npm run release
-```
-
-## Examples
-
-### Processing a Resume
-
-1. Create a resume JSON file (resume.json):
-
-```json
-{
-  "name": "John Doe",
-  "title": "Software Engineer",
-  "skills": ["JavaScript", "TypeScript", "Node.js"],
-  "experience": [
-    {
-      "title": "Senior Developer",
-      "company": "Tech Corp",
-      "duration": "2 years"
-    }
-  ]
-}
-```
-
-2. Create a job posting JSON file (job.json):
-
-```json
-{
-  "title": "Senior Software Engineer",
-  "company": "Innovation Inc",
-  "requirements": ["JavaScript", "Node.js", "AWS"],
-  "responsibilities": ["Lead development", "Code review"]
-}
-```
-
-3. Run the finesse command:
-
-```bash
-npm run finesse-resume -- -r resume.json -j job.json -o enhanced-resume.json
-=======
 # Finessume
 
 A professional resume generation and management system built with Phoenix, LiveView, and Petal Components.
@@ -340,9 +9,35 @@ A professional resume generation and management system built with Phoenix, LiveV
 - Petal Components for UI components
 - TailwindCSS for styling
 - PostgreSQL for data persistence
-- OpenAI integration for resume enhancement
+- LLM integration for resume optimization
+
+## What's New
+
+- **Schemas & Migrations:**
+
+  - Updated the **Resumes** and **Templates** schemas.
+  - Added a migration to include a new `schema_version` field for templates and a migration to add missing columns (e.g. `content`, `version`).
+  - The Resume schema now references `template_version_id` instead of `template_id`.
+
+- **Job Editing:**
+
+  - Added a new LiveView route for editing jobs (`/jobs/:id/edit`).
+  - Created a basic `JobLive.Edit` module to handle job editing.
+
+- **Typography Override:**
+
+  - Introduced a fallback typography module (`CoreComponentTypography`) to override missing PetalComponents functions.
+
+- **LLM Integration:**
+  - Integrated a simple LLM client and supervisor to analyze and finesse resumes based on job descriptions.
+- **API Updates:**
+  - RESTful API endpoints now include routes for authentication, resume/job management, optimization, and finessed resume actions.
 
 ## Architecture Overview
+
+> This is a _Mermaid_ diagram. For supported readers, click the ▶ to expand.
+
+<details><content>
 
 ```mermaid
 graph TB
@@ -375,7 +70,9 @@ graph TB
     VM --> J
 ```
 
-## Project Structure
+</content></details>
+
+### Project Structure
 
 ```
 finessume/
@@ -400,7 +97,9 @@ finessume/
 └── test/
 ```
 
-## Setup
+</content></details>
+
+### Setup
 
 ```bash
 # Clone the repository
@@ -460,7 +159,9 @@ defmodule FinessumeWeb.ResumeLive.Editor do
 end
 ```
 
-## User Journey
+</content></details>
+
+### User Journey
 
 1. **Onboarding:** Users visit the landing page to learn about Finessume before registering or logging in.
 2. **Registration & Login:** New users sign up or existing users log in to access the resume builder.
@@ -479,7 +180,7 @@ defmodule Finessume.Resumes.Resume do
   schema "resumes" do
     field :title, :string
     field :content, :map
-    field :template_id, :id
+    field :template_version_id, :id
     field :user_id, :id
 
     timestamps()
@@ -493,7 +194,9 @@ defmodule Finessume.Resumes.Resume do
 end
 ```
 
-## Development Commands
+</content></details>
+
+### Development Commands
 
 ```bash
 # Start development server
@@ -512,7 +215,9 @@ mix ecto.migrate
 iex -S mix phx.server
 ```
 
-## Testing
+</content></details>
+
+### Testing
 
 ```bash
 # Run all tests
@@ -523,23 +228,23 @@ mix test test/finessume/resumes_test.exs
 
 # Run tests with coverage
 mix test --cover
->>>>>>> Stashed changes
 ```
 
-## Environment Variables
+</content></details>
+
+### Environment Variables
 
 Create a `.env` file with:
 
 ```
-<<<<<<< Updated upstream
-OPENAI_API_KEY=your_api_key_here
-=======
 export OPENAI_API_KEY=your_api_key_here
 export SECRET_KEY_BASE=your_secret_key
 export DATABASE_URL=your_database_url
 ```
 
-## Deployment
+</content></details>
+
+### Deployment
 
 The application can be deployed to any platform that supports Elixir/Phoenix applications:
 
@@ -552,18 +257,15 @@ _build/prod/rel/finessume/bin/finessume eval "Finessume.Release.migrate"
 
 # Start the application
 _build/prod/rel/finessume/bin/finessume start
->>>>>>> Stashed changes
 ```
 
-## Contributing
+</content></details>
+
+### Contributing
 
 1. Fork the repository
 2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-<<<<<<< Updated upstream
-3. Run tests (`npm test`)
-=======
 3. Run tests (`mix test`)
->>>>>>> Stashed changes
 4. Commit your changes (`git commit -m 'Add amazing feature'`)
 5. Push to the branch (`git push origin feature/amazing-feature`)
 6. Open a Pull Request
@@ -571,8 +273,6 @@ _build/prod/rel/finessume/bin/finessume start
 ## License
 
 MIT License - see LICENSE file for details
-<<<<<<< Updated upstream
-=======
 
 # Resume Optimizer SaaS Architecture Design
 
@@ -581,6 +281,10 @@ MIT License - see LICENSE file for details
 This SaaS application will analyze resumes against job descriptions, provide a compatibility score (1-10), and automatically optimize ("finesse") resumes when the score is 7 or higher. The system leverages the Petal Boilerplate (Phoenix, Elixir, TailwindCSS, Alpine.js, LiveView) with LLM integration for intelligent document analysis.
 
 ## Domain Model
+
+> This is a _Mermaid_ diagram. For supported readers, click the ▶ to expand.
+
+<details><content>
 
 ```mermaid
 classDiagram
@@ -670,7 +374,13 @@ classDiagram
     FinessedResume "0..1" -- "1" AnalysisLog : generated by
 ```
 
-## Context Architecture
+</content></details>
+
+### Context Architecture
+
+> This is a _Mermaid_ diagram. For supported readers, click the ▶ to expand.
+
+<details><content>
 
 ```mermaid
 classDiagram
@@ -762,9 +472,15 @@ classDiagram
     Analytics --> Optimizer : monitors
 ```
 
-## Application Flow
+</content></details>
+
+### Application Flow
 
 ### Resume Optimization Process
+
+> This is a _Mermaid_ diagram. For supported readers, click the ▶ to expand.
+
+<details><content>
 
 ```mermaid
 sequenceDiagram
@@ -804,7 +520,13 @@ sequenceDiagram
     UI-->>User: Show results
 ```
 
-### User Authentication Flow
+</content></details>
+
+#### User Authentication Flow
+
+> This is a _Mermaid_ diagram. For supported readers, click the ▶ to expand.
+
+<details><content>
 
 ```mermaid
 sequenceDiagram
@@ -831,7 +553,13 @@ sequenceDiagram
     Browser-->>User: Show resume dashboard
 ```
 
-## LiveView Structure
+</content></details>
+
+### LiveView Structure
+
+> This is a _Mermaid_ diagram. For supported readers, click the ▶ to expand.
+
+<details><content>
 
 ```mermaid
 classDiagram
@@ -868,7 +596,7 @@ classDiagram
         +handle_event("start_analysis")
         +handle_event("view_optimization")
         +handle_event("save_finessed_resume")
-        +handle_info({:analysis_complete, result})
+
     }
 
     class FinessedResumeLive {
@@ -933,9 +661,15 @@ classDiagram
     FinessedResumeLive --> OptimizationResultComponent : uses
 ```
 
-## UI Wireframes
+</content></details>
+
+### UI Wireframes
 
 ### Dashboard View
+
+> This is a _Mermaid_ diagram. For supported readers, click the ▶ to expand.
+
+<details><content>
 
 ```mermaid
 graph TD
@@ -970,6 +704,14 @@ graph TD
 
 ### Optimization Process View
 
+> This is a _Mermaid_ diagram. For supported readers, click the ▶ to expand.
+
+<details><content>
+
+> This is a _Mermaid_ diagram. For supported readers, click the ▶ to expand.
+
+<details><content>
+
 ```mermaid
 graph TD
     subgraph "Optimization Process"
@@ -1003,7 +745,13 @@ graph TD
     end
 ```
 
+</content></details>
+
 ## LLM Integration Architecture
+
+> This is a _Mermaid_ diagram. For supported readers, click the ▶ to expand.
+
+<details><content>
 
 ```mermaid
 graph TD
@@ -1049,7 +797,13 @@ graph TD
     TokenCounter --> UserQuota[User Quota Manager]
 ```
 
-## Deployment Architecture
+</content></details>
+
+### Deployment Architecture
+
+> This is a _Mermaid_ diagram. For supported readers, click the ▶ to expand.
+
+<details><content>
 
 ```mermaid
 graph TD
@@ -1110,7 +864,13 @@ graph TD
     AppServer2 <--> EmailService
 ```
 
-## Core User Journeys
+</content></details>
+
+### Core User Journeys
+
+> This is a _Mermaid_ diagram. For supported readers, click the ▶ to expand.
+
+<details><content>
 
 ```mermaid
 graph TD
@@ -1151,7 +911,13 @@ graph TD
     SaveFinessedResume --> ViewHistory[View Optimization History]
 ```
 
-## Subscription and Pricing Model
+</content></details>
+
+### Subscription and Pricing Model
+
+> This is a _Mermaid_ diagram. For supported readers, click the ▶ to expand.
+
+<details><content>
 
 ```mermaid
 graph TD
@@ -1231,7 +997,9 @@ graph TD
     Enterprise --- PL5
 ```
 
-## Technical Implementation Details
+</content></details>
+
+### Technical Implementation Details
 
 ### LLM Integration with Elixir
 
@@ -1297,7 +1065,9 @@ defmodule ResumeOptimizer.LLM.Client do
 end
 ```
 
-### Finessed Resume Versioning
+</content></details>
+
+#### Finessed Resume Versioning
 
 ```elixir
 defmodule ResumeOptimizer.FinessedResumes do
@@ -1347,7 +1117,9 @@ defmodule ResumeOptimizer.FinessedResumes do
 end
 ```
 
-## API Design
+</content></details>
+
+### API Design
 
 The application will expose a RESTful API for programmatic access:
 
@@ -1387,4 +1159,3 @@ PUT    /api/v1/finessed_resumes/:id/favorite
 GET    /api/v1/jobs/:job_id/finessed_resumes
 GET    /api/v1/finessed_resumes/:id/export
 ```
->>>>>>> Stashed changes
