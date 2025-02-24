@@ -1,6 +1,13 @@
 # Finessume
 
-A professional resume generation and management system built with Phoenix, LiveView, and Petal Components.
+A professional resume generation and enhancement system using OpenAI LLM integration.
+
+## Version Control
+
+| Version | Date       | Changes                                                                                                                                           |
+| ------- | ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 0.2.0   | 2024-01-08 | - Implemented OpenAI streaming client<br>- Added job/resume analysis with LLM<br>- Enhanced scoring system<br>- Refactored AI client architecture |
+| 0.1.0   | 2023-12-15 | Initial release with basic resume management                                                                                                      |
 
 ## Technology Stack
 
@@ -71,7 +78,7 @@ graph TB
 
 </details>
 
-### Project Structure
+## Project Structure
 
 ```
 finessume/
@@ -360,7 +367,7 @@ classDiagram
 
 </details>
 
-### Context Architecture
+## Context Architecture
 
 <details>
 <summary>Click to expand Context Architecture Diagram</summary>
@@ -457,9 +464,9 @@ classDiagram
 
 </details>
 
-### Application Flow
+## Application Flow
 
-#### Resume Optimization Process
+### Resume Optimization Process
 
 <details>
 <summary>Click to expand Resume Optimization Process Diagram</summary>
@@ -504,7 +511,7 @@ sequenceDiagram
 
 </details>
 
-#### User Authentication Flow
+### User Authentication Flow
 
 <details>
 <summary>Click to expand User Authentication Flow Diagram</summary>
@@ -536,7 +543,7 @@ sequenceDiagram
 
 </details>
 
-### LiveView Structure
+## LiveView Structure
 
 <details>
 <summary>Click to expand LiveView Structure Diagram</summary>
@@ -642,7 +649,7 @@ classDiagram
 
 </details>
 
-### UI Wireframes
+## UI Wireframes
 
 #### Dashboard View
 
@@ -682,7 +689,7 @@ graph TD
 
 </details>
 
-#### Optimization Process View
+### Optimization Process View
 
 <details>
 <summary>Click to expand Optimization Process Wireframe</summary>
@@ -722,7 +729,7 @@ graph TD
 
 </details>
 
-### Site Map
+## Site Map
 
 <details>
 <summary>Click to expand Site Map Diagram</summary>
@@ -752,7 +759,7 @@ graph TD
 
 </details>
 
-### Updated User Journey
+## Updated User Journey
 
 <details>
 <summary>Click to expand Updated User Journey Diagram</summary>
@@ -857,3 +864,193 @@ sequenceDiagram
 ```
 
 </details>
+
+## OpenAI Integration Flow
+
+<details>
+<summary>Click to expand OpenAI Integration Flow Diagram</summary>
+
+```mermaid
+sequenceDiagram
+    participant UI
+    participant Client
+    participant OpenAI
+    participant DB
+
+    UI->>Client: Submit resume & job
+    Client->>OpenAI: Analyze compatibility
+    OpenAI-->>Client: Return score
+
+    alt score >= 8.0
+        Client->>OpenAI: Request enhancement
+        OpenAI-->>Client: Stream optimized content
+        Client->>DB: Save enhanced resume
+        DB-->>Client: Confirm save
+        Client-->>UI: Return enhanced resume
+    else score < 8.0
+        Client-->>UI: Return score & explanation
+    end
+```
+
+</details>
+
+## OpenAI Client Usage
+
+<details>
+<h2><summary> Example Client Usage (Elixir)</summary></h2>
+<details>
+    <summary>Elixir code for processing a job, enhancing a resume, and processing multiple jobs in parallel.</summary>
+
+```elixir
+# Process a job description
+
+
+{:ok, result} = Client.process_job(description)
+
+# Enhance a resume
+{:ok, enhanced} = Client.enhance_resume(resume, job)
+
+# Process multiple jobs in parallel
+results = Client.process_jobs(descriptions)
+```
+</details>
+
+---
+
+<details>
+    <summary>Elixir code demonstrating regular and streaming completions using OpenAIClient.chat_completion.</summary>
+
+```elixir
+# Regular completion
+{:ok, response} = OpenAIClient.chat_completion(request)
+
+# Streaming completion
+OpenAIClient.chat_completion(request, fn chunk ->
+        # Handle each chunk
+end)
+```
+</details>
+
+---
+
+<details>
+    <summary>Elixir function definition for enhancing a resume based on a job with conditional matching and error handling.</summary>
+
+```elixir
+def enhance_resume(resume, job, opts \\ []) do
+        with score when score >= 8.0 <- calculate_match_score(resume, job),
+                         {:ok, enhanced} <- request_enhancement(resume, job, opts),
+                         {:ok, stored} <- save_enhanced_resume(enhanced) do
+                {:ok, %{stored: stored, enhanced: enhanced}}
+        else
+                score when is_number(score) ->
+                        {:error, {:low_fit_score, score}}
+
+                {:error, reason} ->
+                        {:error, :enhancement_failed}
+        end
+end
+```
+</details>
+
+---
+
+<details>
+    <summary>Elixir code for chat_completion function using Req HTTP client and Agent for handling streaming responses.</summary>
+
+```elixir
+def chat_completion(request, callback) do
+        {:ok, agent} = Agent.start_link(fn -> [] end)
+
+        response =
+                Req.post(
+                        @chat_completions_url,
+                        json: set_stream(request, true),
+                        auth: {:bearer, api_key()},
+                        into: fn
+                                {:data, data}, acc ->
+                                        buffer = Agent.get(agent, & &1)
+                                        {buffer, events} = parse(buffer, data)
+                                        Enum.each(events, callback)
+                                        :ok = Agent.update(agent, fn _ -> buffer end)
+                                        {:cont, acc}
+                        end
+                )
+
+        :ok = Agent.stop(agent)
+        response
+end
+```
+</details>
+
+---
+
+<details>
+    <summary>JSON payload structure representing a resume with personal info, experience, and skills.</summary>
+
+```json
+{
+        "resume": {
+                "personalInfo": { "name": "string", "contact": "object" },
+                "experience": { "items": ["array"] },
+                "skills": { "items": ["array"] }
+        }
+}
+```
+</details>
+
+---
+
+<details>
+    <summary>Elixir code showing error handling when enhancing a resume via pattern matching on result tuples.</summary>
+
+```elixir
+case enhance_resume(resume, job) do
+        {:ok, enhanced} ->
+                # Success path
+                {:ok, enhanced}
+
+        {:error, {:low_fit_score, score}} ->
+                # Score too low
+                {:error, "Score #{score} below threshold"}
+
+        {:error, :enhancement_failed} ->
+                # Technical error
+                {:error, "Enhancement failed"}
+end
+```
+</details>
+
+---
+
+<details>
+    <summary>Elixir tests validating successful resume enhancement and error handling for low-fit scores.</summary>
+
+```elixir
+test "enhances resume when score is sufficient" do
+        resume = build(:resume)
+        job = build(:job)
+
+        assert {:ok, enhanced} = Client.enhance_resume(resume, job)
+        assert enhanced.score >= 8.0
+end
+
+test "returns error when score is insufficient" do
+        resume = build(:resume)
+        job = build(:job, requirements: ["20 years experience"])
+
+        assert {:error, {:low_fit_score, score}} = Client.enhance_resume(resume, job)
+        assert score < 8.0
+end
+```
+</details>
+
+## Future Enhancements
+
+Planned improvements to the enhancement flow:
+
+1.  Parallel processing for batch enhancements
+2.  Improved scoring algorithms
+3.  Caching of common enhancements
+4.  A/B testing of enhancement strategies
+5.  User feedback integration
