@@ -4,7 +4,7 @@ defmodule FinessumeWeb do
   as controllers, components, channels, and so on.
   """
 
-  use Finessume.Aliases
+  use Phoenix.Component
 
   def static_paths, do: ~w(assets fonts images favicon.ico robots.txt)
 
@@ -75,7 +75,7 @@ defmodule FinessumeWeb do
       import FinessumeWeb.Gettext
 
       # Petal Components aliases
-      alias PetalComponents.{Container, Typography, Button}
+      alias PetalComponents.{Button, Container, Typography}
       alias Phoenix.LiveView.JS
 
       unquote(verified_routes())

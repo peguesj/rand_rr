@@ -1,7 +1,6 @@
 defmodule Finessume.Resumes do
   alias Finessume.Repo
   alias Finessume.Resumes.Resume
-  alias Finessume.Seeds
 
   def subscribe do
     Phoenix.PubSub.subscribe(Finessume.PubSub, "resumes")
